@@ -1,0 +1,67 @@
+.editor {
+  max-width: 700px;
+  margin: 40px auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.title-input {
+  font-size: 40px;
+  font-weight: bold;
+  border: none;
+  outline: none;
+  margin-bottom: 20px;
+}
+
+.content-input {
+  font-size: 18px;
+  line-height: 1.8;
+  border: none;
+  outline: none;
+  min-height: 300px;
+  resize: none;
+}
+
+.image-input {
+  margin-top: 20px;
+  padding: 10px;
+}
+
+button {
+  margin-top: 20px;
+  padding: 12px;
+  background: black;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.tag-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  border: 1px solid #ccc;
+  padding: 8px;
+  margin-top: 10px;
+}
+
+.tag-chip {
+  background: #eee;
+  padding: 5px 10px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tag-chip button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.tag-input {
+  border: none;
+  outline: none;
+}

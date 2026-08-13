@@ -1,0 +1,770 @@
+.home {
+  width: 100%;
+  min-height: 100vh;
+  background: #f7f7f7;
+  box-sizing: border-box;
+}
+
+.home-container {
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 25px 30px 60px;
+  box-sizing: border-box;
+}
+
+.category-section {
+  width: 100%;
+  margin-bottom: 25px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.category-section::-webkit-scrollbar {
+  display: none;
+}
+
+.category-filter {
+  display: flex;
+  gap: 10px;
+  flex-wrap: nowrap;
+  width: max-content;
+}
+
+.category-filter button {
+  padding: 8px 17px;
+  border: 1px solid #e0e0e0;
+  background: #ffffff;
+  color: #555;
+  border-radius: 22px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+/* HOVER */
+
+.category-filter button:hover {
+  background: #eeeeee;
+
+  border-color: #d0d0d0;
+}
+
+/* ACTIVE */
+
+.category-filter button.active {
+  background: #111;
+
+  color: white;
+
+  border-color: #111;
+}
+
+/* =========================================
+   TAG FILTER
+========================================= */
+
+.tag-filter {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 15px;
+
+  padding: 10px 15px;
+
+  margin-bottom: 20px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e5e5;
+
+  border-radius: 8px;
+
+  font-size: 14px;
+
+  color: #555;
+}
+
+.clear-tag {
+  border: none;
+
+  background: transparent;
+
+  color: #d93025;
+
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+/* =========================================
+   MAIN TWO COLUMN LAYOUT
+========================================= */
+
+.home-layout {
+  display: grid;
+
+  grid-template-columns: minmax(0, 1fr) 300px;
+
+  gap: 35px;
+
+  align-items: start;
+}
+
+/* =========================================
+   ARTICLES SECTION
+========================================= */
+
+.articles-section {
+  min-width: 0;
+}
+
+/* =========================================
+   FEATURED ARTICLE
+========================================= */
+
+.featured-card {
+  background: #ffffff;
+
+  border-radius: 14px;
+
+  overflow: hidden;
+
+  cursor: pointer;
+
+  margin-bottom: 25px;
+
+  border: 1px solid #eeeeee;
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.featured-card:hover {
+  transform: translateY(-3px);
+
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.09);
+}
+
+/* FEATURED IMAGE */
+
+.featured-image {
+  position: relative;
+
+  width: 100%;
+
+  height: 310px;
+
+  overflow: hidden;
+}
+
+.featured-image img {
+  width: 100%;
+
+  height: 100%;
+
+  object-fit: cover;
+
+  transition: transform 0.35s ease;
+}
+
+.featured-card:hover .featured-image img {
+  transform: scale(1.04);
+}
+
+/* FEATURED LABEL */
+
+.featured-label {
+  position: absolute;
+
+  top: 16px;
+
+  left: 16px;
+
+  background: #111;
+
+  color: white;
+
+  padding: 6px 12px;
+
+  border-radius: 20px;
+
+  font-size: 12px;
+
+  font-weight: 600;
+}
+
+/* FEATURED CONTENT */
+
+.featured-content {
+  padding: 25px;
+}
+
+/* CATEGORY */
+
+.article-category {
+  display: inline-block;
+
+  margin-bottom: 8px;
+
+  color: #1a8917;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.5px;
+}
+
+/* FEATURED TITLE */
+
+.featured-content h1 {
+  margin: 0 0 12px;
+
+  color: #181818;
+
+  font-size: 34px;
+
+  line-height: 1.15;
+
+  font-weight: 750;
+
+  letter-spacing: -0.7px;
+}
+
+/* FEATURED PREVIEW */
+
+.featured-preview {
+  margin: 0 0 15px;
+
+  color: #666;
+
+  font-size: 16px;
+
+  line-height: 1.65;
+}
+
+/* =========================================
+   ARTICLE META
+========================================= */
+
+.article-meta,
+.post-meta {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  color: #777;
+
+  font-size: 12px;
+}
+
+/* =========================================
+   REGULAR ARTICLES
+========================================= */
+
+.articles-list {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 18px;
+}
+
+/* =========================================
+   POST CARD
+========================================= */
+
+.post-card {
+  display: flex;
+
+  justify-content: space-between;
+
+  gap: 22px;
+
+  background: #ffffff;
+
+  padding: 20px;
+
+  border-radius: 12px;
+
+  border: 1px solid #eeeeee;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.post-card:hover {
+  transform: translateY(-3px);
+
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
+}
+
+/* =========================================
+   POST CONTENT
+========================================= */
+
+.post-content {
+  flex: 1;
+
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+}
+
+/* =========================================
+   POST TITLE
+========================================= */
+
+.post-title {
+  margin: 6px 0 8px;
+
+  color: #242424;
+
+  font-size: 21px;
+
+  line-height: 1.3;
+
+  font-weight: 700;
+
+  transition: text-decoration 0.2s ease;
+}
+
+.post-card:hover .post-title {
+  text-decoration: underline;
+}
+
+/* =========================================
+   POST PREVIEW
+========================================= */
+
+.post-preview {
+  margin: 0;
+  color: #6b6b6b;
+  font-size: 15px;
+  line-height: 1.55;
+  overflow: hidden;
+}
+
+/* =========================================
+   POST IMAGE
+========================================= */
+
+.post-image {
+  width: 170px;
+
+  height: 115px;
+
+  flex-shrink: 0;
+
+  overflow: hidden;
+
+  border-radius: 9px;
+}
+
+.post-image img {
+  width: 100%;
+
+  height: 100%;
+
+  object-fit: cover;
+
+  transition: transform 0.3s ease;
+}
+
+.post-card:hover .post-image img {
+  transform: scale(1.05);
+}
+
+/* =========================================
+   TAGS
+========================================= */
+
+.post-tags {
+  margin-top: 10px;
+
+  display: flex;
+
+  gap: 6px;
+
+  flex-wrap: wrap;
+}
+
+.tag {
+  display: inline-block;
+
+  padding: 3px 9px;
+
+  background: #f1f1f1;
+
+  color: #555;
+
+  border-radius: 15px;
+
+  font-size: 11px;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.tag:hover {
+  background: #ddd;
+}
+
+.active-tag {
+  background: #111;
+
+  color: white;
+}
+
+/* =========================================
+   TRENDING
+========================================= */
+
+.trending-section {
+  position: sticky;
+
+  top: 100px;
+
+  background: #ffffff;
+
+  border: 1px solid #eeeeee;
+
+  border-radius: 14px;
+
+  padding: 22px;
+
+  box-sizing: border-box;
+}
+
+/* TRENDING HEADER */
+
+.trending-header {
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  padding-bottom: 15px;
+
+  margin-bottom: 5px;
+
+  border-bottom: 1px solid #eeeeee;
+}
+
+.trending-header h2 {
+  margin: 0;
+
+  color: #181818;
+
+  font-size: 20px;
+
+  font-weight: 750;
+}
+
+.trending-icon {
+  font-size: 18px;
+}
+
+/* =========================================
+   TRENDING ITEM
+========================================= */
+
+.trending-item {
+  display: flex;
+
+  gap: 14px;
+
+  padding: 17px 0;
+
+  border-bottom: 1px solid #eeeeee;
+
+  cursor: pointer;
+}
+
+.trending-item:last-child {
+  border-bottom: none;
+
+  padding-bottom: 0;
+}
+
+.trending-item:hover .trending-content h3 {
+  text-decoration: underline;
+}
+
+/* TRENDING NUMBER */
+
+.trending-number {
+  flex-shrink: 0;
+
+  width: 35px;
+
+  color: #c8c8c8;
+
+  font-size: 23px;
+
+  line-height: 1;
+
+  font-weight: 700;
+}
+
+/* TRENDING CONTENT */
+
+.trending-content {
+  min-width: 0;
+}
+
+.trending-content h3 {
+  margin: 0 0 7px;
+
+  color: #242424;
+
+  font-size: 14px;
+
+  line-height: 1.4;
+
+  font-weight: 700;
+}
+
+/* TRENDING META */
+
+.trending-meta {
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  color: #888;
+
+  font-size: 11px;
+}
+
+/* =========================================
+   NO ARTICLES
+========================================= */
+
+.no-articles {
+  padding: 60px 20px;
+
+  text-align: center;
+
+  background: #ffffff;
+
+  border-radius: 12px;
+
+  border: 1px solid #eeeeee;
+}
+
+.no-articles h3 {
+  margin-bottom: 8px;
+
+  color: #222;
+}
+
+.no-articles p {
+  color: #777;
+}
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 900px) {
+  .home-container {
+    padding: 20px;
+  }
+
+  .home-layout {
+    grid-template-columns: 1fr;
+
+    gap: 25px;
+  }
+
+  .trending-section {
+    position: static;
+
+    width: 100%;
+  }
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+  .home-container {
+    padding: 15px 12px 40px;
+  }
+
+  /* CATEGORY */
+
+  .category-section {
+    margin-bottom: 18px;
+  }
+
+  .category-filter {
+    gap: 7px;
+  }
+
+  .category-filter button {
+    padding: 7px 13px;
+
+    font-size: 13px;
+  }
+
+  /* FEATURED */
+
+  .featured-card {
+    border-radius: 10px;
+
+    margin-bottom: 18px;
+  }
+
+  .featured-image {
+    height: 210px;
+  }
+
+  .featured-content {
+    padding: 18px;
+  }
+
+  .featured-content h1 {
+    font-size: 25px;
+
+    letter-spacing: -0.4px;
+  }
+
+  .featured-preview {
+    font-size: 14px;
+
+    line-height: 1.55;
+  }
+
+  /* REGULAR ARTICLE */
+
+  .post-card {
+    padding: 15px;
+
+    gap: 12px;
+
+    border-radius: 10px;
+  }
+
+  .post-title {
+    font-size: 18px;
+
+    margin-top: 5px;
+  }
+
+  .post-preview {
+    font-size: 13px;
+  }
+
+  .post-image {
+    width: 105px;
+
+    height: 82px;
+
+    border-radius: 7px;
+  }
+
+  .article-category {
+    font-size: 11px;
+  }
+
+  .post-meta {
+    font-size: 10px;
+  }
+
+  .tag {
+    font-size: 10px;
+
+    padding: 3px 7px;
+  }
+
+  /* TRENDING */
+
+  .trending-section {
+    padding: 18px;
+
+    border-radius: 10px;
+  }
+
+  .trending-header h2 {
+    font-size: 18px;
+  }
+
+  .trending-item {
+    padding: 15px 0;
+  }
+
+  .trending-number {
+    font-size: 20px;
+
+    width: 30px;
+  }
+
+  .trending-content h3 {
+    font-size: 13px;
+  }
+
+  .trending-meta {
+    font-size: 10px;
+  }
+
+  /* TAG FILTER */
+
+  .tag-filter {
+    align-items: flex-start;
+
+    font-size: 12px;
+  }
+}
+
+/* =========================================
+   VERY SMALL MOBILE
+========================================= */
+
+@media (max-width: 380px) {
+  .home-container {
+    padding-left: 8px;
+
+    padding-right: 8px;
+  }
+
+  .featured-image {
+    height: 180px;
+  }
+
+  .featured-content h1 {
+    font-size: 22px;
+  }
+
+  .post-card {
+    padding: 12px;
+  }
+
+  .post-image {
+    width: 90px;
+
+    height: 72px;
+  }
+}
