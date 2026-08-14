@@ -2,7 +2,9 @@ import express from "express";
 import { 
   createArticle, 
   getPublishedArticles, 
-  getArticleBySlug 
+  getArticleBySlug,
+  getCategories,
+  getTrendingArticles 
 } from "../controllers/articleController.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 import { updateArticle,toggleLikePost, toggleBookmark } from "../controllers/articleController.js";
@@ -17,6 +19,10 @@ const router = express.Router();
 router.post("/", authMiddleware,adminMiddleware, createArticle);
 
 // GET ALL (public)
+router.get("/categories", getCategories);
+
+router.get("/trending", getTrendingArticles);
+
 router.get("/", getPublishedArticles);
 
 // GET BY SLUG (public)

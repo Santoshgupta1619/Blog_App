@@ -1,111 +1,30 @@
-/* PAGE BACKGROUND */
-.page {
-  display: flex;
-  justify-content: center;
-  background: #f5f5f5;
-  min-height: 100vh;
-}
-
-/* CONTAINER */
-.article-container {
-  max-width: 750px;
-  width: 100%;
-  background: #ffffff;
-  padding: 40px 20px;
-}
-
-/* LOADING */
-.loading {
-  text-align: center;
-  margin-top: 50px;
-}
-
-/* TITLE */
-.article-title {
-  font-size: 42px;
-  font-weight: 800;
-  line-height: 1.2;
-  margin-bottom: 16px;
-  color: #242424;
-}
-
-/* META */
-.article-meta {
-  color: #6b6b6b;
-  font-size: 14px;
-  margin-bottom: 25px;
-}
-
-/* IMAGE */
-.article-image {
-  width: 100%;
-  height: 400px;
-  object-fit: cover;
-  border-radius: 10px;
-  margin-bottom: 30px;
-}
-
-/* CONTENT */
-.article-content {
-  font-size: 20px;
-  line-height: 1.8;
-  color: #242424;
-  margin-bottom: 50px;
-  white-space: pre-line;
-}
-
-/* COMMENT HEADER */
-.comment-header {
-  font-size: 22px;
-  margin-bottom: 15px;
-}
-
-/* COMMENT BOX */
-.comment-box {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 25px;
-}
-
-/* INPUT */
-.input {
-  flex: 1;
-  padding: 10px 14px;
-  border-radius: 20px;
-  border: 1px solid #ddd;
-  outline: none;
-}
-
-/* BUTTON */
-.primary-btn {
-  padding: 10px 18px;
-  border-radius: 20px;
-  border: none;
-  background: #1a8917;
-  color: white;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.primary-btn:hover {
-  background: #0f730c;
-}
-
-
-
-.article-category {
-  font-weight: bold;
-  margin-top: 10px;
-}
-
-.article-tags {
-  margin: 10px 0;
-}
-
-.tag {
-  background: #eee;
-  padding: 5px 10px;
-  margin-right: 5px;
-  border-radius: 15px;
-  font-size: 12px;
-}
+.page { min-height: 100vh; background: radial-gradient(circle at 85% 10%, rgba(91, 139, 103, .12), transparent 27rem), #f7f8f6; }
+.article-container { width: min(100% - 40px, 820px); margin: 0 auto; padding: 64px 0 76px; }
+.loading { margin: 72px 0; color: #5d7063; text-align: center; }
+.article-kicker { margin: 0 0 12px; color: #397052; font-size: .72rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+.article-title { margin: 0 0 18px; color: #18231c; font-family: Georgia, 'Times New Roman', serif; font-size: clamp(2.25rem, 5vw, 4.1rem); font-weight: 600; letter-spacing: -.06em; line-height: 1.02; }
+.article-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 32px; color: #77837a; font-size: .78rem; }
+.article-image { display: block; width: 100%; height: min(52vw, 450px); margin-bottom: 36px; border-radius: 16px; object-fit: cover; background: #e8eee8; box-shadow: 0 18px 36px rgba(30, 57, 39, .1); }
+.article-content { margin-bottom: 28px; color: #2a352d; font-family: Georgia, 'Times New Roman', serif; font-size: clamp(1.05rem, 2vw, 1.2rem); line-height: 1.85; white-space: pre-line; }
+.article-container > button, .comment > button { display: inline-flex; align-items: center; gap: 7px; min-height: 38px; margin: 0 8px 36px 0; padding: 0 13px; border: 1px solid #d6e1d7; border-radius: 8px; background: #fff; color: #3d5445; cursor: pointer; font: 800 .76rem/1 var(--sans); transition: background .2s, border-color .2s, color .2s, transform .2s; }
+.article-container > button:hover, .comment > button:hover { border-color: #aac4b0; background: #edf5ee; color: #24583a; transform: translateY(-1px); }
+.article-container > button:focus-visible, .comment > button:focus-visible, .primary-btn:focus-visible, .secondary-btn:focus-visible, .link-btn:focus-visible { outline: 3px solid rgba(66, 126, 92, .4); outline-offset: 2px; }
+.responses-heading { display: flex; align-items: center; gap: 9px; margin-bottom: 18px; padding-top: 2px; border-top: 1px solid #dce5dd; }
+.comment-header { margin: 30px 0 0; color: #1f2c23; font-family: Georgia, 'Times New Roman', serif; font-size: 1.65rem; font-weight: 600; letter-spacing: -.035em; }
+.responses-heading > span { display: grid; min-width: 24px; height: 24px; margin-top: 30px; place-items: center; border-radius: 50%; background: #e5efe6; color: #397052; font-size: .72rem; font-weight: 800; }
+.comment-box { display: flex; gap: 10px; margin-bottom: 28px; padding: 12px; border: 1px solid #dfe7df; border-radius: 12px; background: #fff; }
+.input { flex: 1; min-width: 0; min-height: 42px; padding: 0 12px; border: 1px solid #d7e1d8; border-radius: 8px; background: #fcfdfc; color: #203026; font: .88rem var(--sans); outline: none; transition: border-color .2s, box-shadow .2s; }
+.input:focus { border-color: #4d8964; box-shadow: 0 0 0 3px rgba(77, 137, 100, .13); }
+.primary-btn, .secondary-btn, .link-btn { cursor: pointer; font: 800 .75rem/1 var(--sans); }
+.primary-btn { min-height: 42px; padding: 0 16px; border: 0; border-radius: 8px; background: #214d35; color: #fff; transition: background .2s, transform .2s; }
+.primary-btn:hover { background: #183d2a; transform: translateY(-1px); }
+.secondary-btn { min-height: 38px; padding: 0 13px; border: 1px solid #d6e1d7; border-radius: 7px; background: #fff; color: #53685a; }
+.login-warning { margin: 0 0 28px; padding: 13px 15px; border: 1px solid #eadfc8; border-radius: 9px; background: #fffbf2; color: #866936; font-size: .82rem; }
+.comment { margin-top: 13px; padding: 19px; border: 1px solid #e0e7e0; border-radius: 12px; background: #fff; }
+.comment-header-row { display: flex; align-items: center; gap: 10px; }
+.avatar { display: grid; width: 34px; height: 34px; flex: 0 0 34px; place-items: center; border-radius: 50%; background: #dfece1; color: #2e6844; font-size: .8rem; font-weight: 800; }
+.username { margin: 0; color: #2c3d31; font-size: .78rem; font-weight: 800; }.time { margin: 2px 0 0; color: #89958c; font-size: .7rem; }
+.comment-text { margin: 14px 0 12px; color: #4a5a4e; font-size: .88rem; line-height: 1.6; white-space: pre-line; }
+.comment > button { min-height: 30px; margin-bottom: 0; padding: 0 9px; border-radius: 7px; font-size: .7rem; }
+.actions { display: flex; gap: 12px; margin-top: 13px; }.link-btn { padding: 0; border: 0; background: transparent; color: #397052; }.link-btn:hover { color: #193f2b; text-decoration: underline; }.actions .link-btn:last-child { color: #ab4a40; }
+@media (max-width: 600px) { .article-container { width: min(100% - 30px, 820px); padding: 38px 0 52px; } .article-title { font-size: 2.25rem; } .article-image { height: 240px; margin-bottom: 28px; border-radius: 12px; } .article-content { font-size: 1.04rem; line-height: 1.75; } .comment-box { align-items: stretch; flex-direction: column; } .primary-btn { width: 100%; } .comment { padding: 16px; } }

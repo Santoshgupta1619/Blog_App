@@ -84,41 +84,150 @@ export const createArticle = async (req, res) => {
 
 
 // 🔹 GET ALL ARTICLES (WITH CATEGORY + TAGS)
+// 🔹 GET PUBLISHED ARTICLES (PAGINATION)
 export const getPublishedArticles = async (req, res) => {
   try {
+    // page & limit
+    const page = parseInt(req.query.page) || 1;
+const limit = parseInt(req.query.limit) || 5;
+const category = req.query.category || "";
+    const offset = (page - 1) * limit;
+
+    // Get paginated articles
+    const result = await pool.query(
+  `
+  SELECT
+    a.id,
+    a.title,
+    a.slug,
+    a.content,
+    a.created_at,
+    a.image_url,
+    c.name AS category,
+
+    COALESCE(
+      json_agg(DISTINCT t.name)
+      FILTER (WHERE t.name IS NOT NULL),
+      '[]'
+    ) AS tags
+
+  FROM articles a
+
+  LEFT JOIN categories c
+    ON a.category_id = c.id
+
+  LEFT JOIN article_tags at
+    ON a.id = at.article_id
+
+  LEFT JOIN tags t
+    ON at.tag_id = t.id
+
+  WHERE a.status = 'published'
+  AND ($3 = '' OR c.name = $3)
+
+  GROUP BY a.id, c.name
+
+  ORDER BY a.created_at DESC
+
+  LIMIT $1 OFFSET $2
+  `,
+  [limit, offset, category]
+);
+
+    // Total articles
+    const countResult = await pool.query(
+  `SELECT COUNT(*)
+FROM articles a
+LEFT JOIN categories c
+ON a.category_id = c.id
+WHERE a.status='published'
+AND ($1 = '' OR c.name = $1)`,
+  [category]
+);
+
+
+    const total = Number(countResult.rows[0].count);
+
+    res.json({
+      page,
+      limit,
+      total,
+      totalPages: Math.ceil(total / limit),
+      data: result.rows,
+    });
+
+
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      error: err.message,
+    });
+  }
+};
+
+
+export const getCategories = async (req, res) => {
+  try {
     const result = await pool.query(`
-      SELECT 
-        a.id,
-        a.title,
-        a.slug,
-        a.content,
-        a.created_at,
-        a.image_url,
-        c.name AS category,
-
-        COALESCE(
-          json_agg(DISTINCT t.name) 
-          FILTER (WHERE t.name IS NOT NULL),
-          '[]'
-        ) AS tags
-
-      FROM articles a
-      LEFT JOIN categories c ON a.category_id = c.id
-      LEFT JOIN article_tags at ON a.id = at.article_id
-      LEFT JOIN tags t ON at.tag_id = t.id
-
-      WHERE a.status = 'published'  
-
-      GROUP BY a.id, c.name
-      ORDER BY a.created_at DESC
+      SELECT DISTINCT
+        c.id,
+        c.name
+      FROM categories c
+      INNER JOIN articles a
+        ON a.category_id = c.id
+      WHERE a.status = 'published'
+      ORDER BY c.name ASC
     `);
 
     res.json(result.rows);
   } catch (err) {
+    console.error("GET CATEGORIES ERROR:", err);
     res.status(500).json({ error: err.message });
   }
 };
 
+
+export const getTrendingArticles = async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT
+        a.id,
+        a.title,
+        a.slug,
+        a.image_url,
+        a.created_at,
+        c.name AS category,
+
+        COUNT(al.id) AS like_count
+
+      FROM articles a
+
+      LEFT JOIN categories c
+        ON c.id = a.category_id
+
+      LEFT JOIN article_likes al
+        ON al.article_id = a.id
+
+      WHERE a.status = 'published'
+
+      GROUP BY
+        a.id,
+        c.name
+
+      ORDER BY
+        COUNT(al.id) DESC,
+        a.created_at DESC
+
+      LIMIT 5
+    `);
+
+    res.json(result.rows);
+  } catch (err) {
+    console.error("GET TRENDING ERROR:", err);
+    res.status(500).json({ error: err.message });
+  }
+};
 
 
 // 🔹 GET SINGLE ARTICLE BY SLUG

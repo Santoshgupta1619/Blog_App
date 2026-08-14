@@ -142,6 +142,7 @@ const handleBookmark = async () => {
       <div className="article-container">
 
         {/* TITLE */}
+        <p className="article-kicker">{article.category || "Article"}</p>
         <h1 className="article-title">{article.title}</h1>
 
         {/* META */}
@@ -177,7 +178,10 @@ const handleBookmark = async () => {
 </button>
 
         {/* COMMENTS */}
-        <h2 className="comment-header">Responses</h2>
+        <div className="responses-heading">
+          <h2 className="comment-header">Responses</h2>
+          <span>{comments.length}</span>
+        </div>
 
 {token ? (
   <div className="comment-box">

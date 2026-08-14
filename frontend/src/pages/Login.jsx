@@ -43,27 +43,41 @@ const Login = () => {
   return (
     <div className="auth-page">
       <div className="auth-box">
-        <h2>Welcome Back</h2>
+        <div className="auth-brand">Indian Technology Guide</div>
+        <div className="auth-heading">
+          <p className="auth-kicker">Welcome back</p>
+          <h2>Sign in to continue.</h2>
+          <p>Access your reading activity and personalised dashboard.</p>
+        </div>
 
-        <input
-          name="email"
-          placeholder="Email"
-          onChange={handleChange}
-        />
+        <div className="auth-fields">
+          <label htmlFor="login-email">Email address</label>
+          <input
+            id="login-email"
+            name="email"
+            type="email"
+            placeholder="you@example.com"
+            value={form.email}
+            onChange={handleChange}
+          />
 
-        <input
-          name="password"
-          type="password"
-          placeholder="Password"
-          onChange={handleChange}
-        />
+          <label htmlFor="login-password">Password</label>
+          <input
+            id="login-password"
+            name="password"
+            type="password"
+            placeholder="Enter your password"
+            value={form.password}
+            onChange={handleChange}
+          />
+        </div>
 
-        <button onClick={handleSubmit}>
-          Login
+        <button className="auth-submit" onClick={handleSubmit}>
+          Sign in <span aria-hidden="true">→</span>
         </button>
 
-        <p onClick={() => navigate("/register")}>
-          Don't have an account? Register
+        <p className="auth-switch">
+          New here? <button onClick={() => navigate("/register")}>Create an account</button>
         </p>
       </div>
     </div>

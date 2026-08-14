@@ -34,31 +34,50 @@ const Register = () => {
   return (
     <div className="auth-page">
       <div className="auth-box">
-        <h2>Create Account</h2>
+        <div className="auth-brand">Indian Technology Guide</div>
+        <div className="auth-heading">
+          <p className="auth-kicker">Join the community</p>
+          <h2>Create your account.</h2>
+          <p>Save stories, follow along, and make your reading space your own.</p>
+        </div>
 
-        <input
-          name="name"
-          placeholder="Name"
-          onChange={handleChange}
-        />
+        <div className="auth-fields">
+          <label htmlFor="register-name">Your name</label>
+          <input
+            id="register-name"
+            name="name"
+            placeholder="Enter your name"
+            value={form.name}
+            onChange={handleChange}
+          />
 
-        <input
-          name="email"
-          placeholder="Email"
-          onChange={handleChange}
-        />
+          <label htmlFor="register-email">Email address</label>
+          <input
+            id="register-email"
+            name="email"
+            type="email"
+            placeholder="you@example.com"
+            value={form.email}
+            onChange={handleChange}
+          />
 
-        <input
-          name="password"
-          type="password"
-          placeholder="Password"
-          onChange={handleChange}
-        />
+          <label htmlFor="register-password">Password</label>
+          <input
+            id="register-password"
+            name="password"
+            type="password"
+            placeholder="Create a password"
+            value={form.password}
+            onChange={handleChange}
+          />
+        </div>
 
-        <button onClick={handleSubmit}>Register</button>
+        <button className="auth-submit" onClick={handleSubmit}>
+          Create account <span aria-hidden="true">→</span>
+        </button>
 
-        <p onClick={() => navigate("/login")}>
-          Already have an account? Login
+        <p className="auth-switch">
+          Already have an account? <button onClick={() => navigate("/login")}>Sign in</button>
         </p>
       </div>
     </div>

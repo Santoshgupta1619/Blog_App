@@ -2,6 +2,7 @@ import { useState } from "react";
 import { createArticle } from "../api/articleApi";
 import { uploadImage } from "../api/uploadApi";
 import { useNavigate } from "react-router-dom";
+import "./CreateArticle.css";
 
 const CreateArticle = () => {
   const navigate = useNavigate();
@@ -159,12 +160,14 @@ const CreateArticle = () => {
   };
 
   return (
-    <div className="container mt-5">
-      <div className="card p-4 shadow">
+    <div className="create-article-page">
+      <div className="create-article-shell">
 
-        <h3 className="mb-4">
-          Create Article
-        </h3>
+        <div className="create-article-heading">
+          <p>EDITOR</p>
+          <h3>Create a new article</h3>
+          <span>Write, organise, and publish your next story.</span>
+        </div>
 
         
         <div className="mb-3">
@@ -200,7 +203,7 @@ const CreateArticle = () => {
 
           <button
             type="button"
-            className="btn btn-primary mt-2"
+            className="btn editor-upload-btn mt-2"
             onClick={handleUpload}
             disabled={uploading}
           >
@@ -219,12 +222,7 @@ const CreateArticle = () => {
               <img
                 src={imageUrl}
                 alt="Article preview"
-                style={{
-                  width: "200px",
-                  height: "120px",
-                  objectFit: "cover",
-                  borderRadius: "8px",
-                }}
+                className="article-preview-image"
               />
             </div>
           )}
@@ -275,13 +273,13 @@ const CreateArticle = () => {
             {tags.map((tag, index) => (
               <span
                 key={index}
-                className="badge bg-primary me-2"
+                className="editor-tag badge me-2"
               >
                 {tag}
 
                 <button
                   type="button"
-                  className="btn btn-sm btn-light ms-2"
+                  className="editor-tag-remove btn btn-sm ms-2"
                   onClick={() =>
                     removeTag(tag)
                   }
@@ -360,7 +358,7 @@ const CreateArticle = () => {
        
         <button
           type="button"
-          className="btn btn-success w-100"
+          className="btn editor-submit-btn w-100"
           onClick={handleSubmit}
           disabled={submitting || uploading}
         >

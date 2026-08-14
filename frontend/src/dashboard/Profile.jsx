@@ -4,106 +4,20 @@ import { getProfile, updateProfile, updatePassword } from "../api/user";
 const Profile = () => {
   const [user, setUser] = useState({});
   const [name, setName] = useState("");
-
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const fetchProfile = async () => { try { const res = await getProfile(); setUser(res.data); setName(res.data.name); } catch (err) { console.error(err); } };
+  useEffect(() => { fetchProfile(); }, []);
+  const handleUpdateProfile = async (e) => { e.preventDefault(); try { const res = await updateProfile({ name }); setUser(res.data); alert("Profile updated ✅"); } catch (err) { console.error(err); } };
+  const handleUpdatePassword = async (e) => { e.preventDefault(); try { await updatePassword({ currentPassword, newPassword }); alert("Password updated 🔐"); setCurrentPassword(""); setNewPassword(""); } catch (err) { console.error(err); } };
 
-  useEffect(() => {
-    fetchProfile();
-  }, []);
-
-  const fetchProfile = async () => {
-    try {
-      const res = await getProfile();
-      setUser(res.data);
-      setName(res.data.name);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  // ✅ update username
-  const handleUpdateProfile = async (e) => {
-    e.preventDefault();
-
-    try {
-      const res = await updateProfile({ name });
-      setUser(res.data);
-      alert("Profile updated ✅");
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  // ✅ update password
-  const handleUpdatePassword = async (e) => {
-    e.preventDefault();
-
-    try {
-      await updatePassword({ currentPassword, newPassword });
-
-      alert("Password updated 🔐");
-
-      setCurrentPassword("");
-      setNewPassword("");
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  return (
-    <div>
-      <h2 className="mb-4">Profile</h2>
-
-      {/* 👤 USER INFO */}
-      <div className="card p-3 mb-4">
-        <p>
-          <strong>Email:</strong> {user.email}
-        </p>
-        <p>
-          <strong>Joined:</strong>{" "}
-          {new Date(user.created_at).toLocaleDateString()}
-        </p>
-      </div>
-
-      {/* ✏️ UPDATE USERNAME */}
-      <form onSubmit={handleUpdateProfile} className="mb-4">
-        <h4>Update Username</h4>
-
-        <input
-          type="text"
-          className="form-control mb-2"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-
-        <button className="btn btn-primary">Update</button>
-      </form>
-
-      {/* 🔐 UPDATE PASSWORD */}
-      <form onSubmit={handleUpdatePassword}>
-        <h4>Change Password</h4>
-
-        <input
-          type="password"
-          placeholder="Current Password"
-          className="form-control mb-2"
-          value={currentPassword}
-          onChange={(e) => setCurrentPassword(e.target.value)}
-        />
-
-        <input
-          type="password"
-          placeholder="New Password"
-          className="form-control mb-2"
-          value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-        />
-
-        <button className="btn btn-warning">Change Password</button>
-      </form>
+  return <div className="profile-page">
+    <header className="profile-page-header"><p>ACCOUNT SETTINGS</p><h2>Your profile</h2><span>Manage your personal details and account security.</span></header>
+    <div className="profile-summary-card"><div className="profile-avatar">{user.name?.charAt(0).toUpperCase() || "U"}</div><div><h3>{user.name || "Your account"}</h3><p>{user.email || "Email address"}</p></div><div className="profile-joined"><span>Member since</span><strong>{user.created_at ? new Date(user.created_at).toLocaleDateString() : "—"}</strong></div></div>
+    <div className="profile-settings-grid">
+      <form onSubmit={handleUpdateProfile} className="profile-settings-card"><div className="profile-card-heading"><h4>Personal details</h4><p>Choose how your name appears on your account.</p></div><label htmlFor="profile-name">Display name</label><input id="profile-name" type="text" className="form-control" value={name} onChange={(e) => setName(e.target.value)} /><button className="btn btn-primary">Save changes</button></form>
+      <form onSubmit={handleUpdatePassword} className="profile-settings-card"><div className="profile-card-heading"><h4>Password</h4><p>Use a strong password to keep your account secure.</p></div><label htmlFor="current-password">Current password</label><input id="current-password" type="password" placeholder="Enter current password" className="form-control" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} /><label htmlFor="new-password">New password</label><input id="new-password" type="password" placeholder="Create a new password" className="form-control" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} /><button className="btn profile-password-btn">Update password</button></form>
     </div>
-  );
+  </div>;
 };
-
 export default Profile;

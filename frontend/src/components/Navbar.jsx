@@ -31,6 +31,14 @@ const Navbar = () => {
       <div
         className="navbar-logo"
         onClick={() => navigate("/")}
+        onKeyDown={(event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            navigate("/");
+          }
+        }}
+        role="link"
+        tabIndex="0"
         title="Go to homepage"
       >
         <img src={logo} alt="The Indian Guide Technology" />

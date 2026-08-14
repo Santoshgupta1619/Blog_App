@@ -3,15 +3,15 @@ import Sidebar from "./Sidebar";
 
 const DashboardLayout = () => {
   return (
-    <div className="d-flex">
+    <div className="user-dashboard-layout">
 
       {/* Sidebar */}
       <Sidebar />
 
       {/* Main Content */}
-      <div className="flex-grow-1 p-4 bg-light" style={{ minHeight: "100vh" }}>
+      <main className="user-dashboard-main">
         <Outlet />
-      </div>
+      </main>
 
     </div>
   );

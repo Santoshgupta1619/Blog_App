@@ -18,6 +18,7 @@ import Categories from "./admin/pages/Categories";
 import Article from "./admin/pages/Articles";
 import AdminBookmark from "./admin/pages/AdminBookmark";
 import EditArticle from "./admin/pages/EditArticle"
+import Footer from "./components/Footer";
 
 
 
@@ -65,6 +66,7 @@ function App() {
           <Route path="articles/edit/:id" element={<EditArticle />} />
         </Route>
       </Routes> 
+     <Footer/>
       
     </BrowserRouter>
   );

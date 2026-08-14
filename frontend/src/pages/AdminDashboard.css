@@ -1,30 +1,8 @@
-/* Admin page layout */
-.admin-layout {
-  display: flex;
-  width: 100%;
-  min-height: 100vh;
-}
+.admin-layout { display: flex; width: 100%; min-height: calc(100vh - 78px); background: #f7f8f6; }
+.admin-sidebar { position: sticky; top: 78px; align-self: flex-start; width: 255px; height: calc(100vh - 78px); padding: 35px 20px !important; overflow-y: auto; border-right: 1px solid #dfe7df; background: #1d402d !important; }
+.admin-sidebar h4 { margin: 0 0 28px !important; color: #fff; font-family: Georgia, serif; font-size: 1.4rem; font-weight: 600; }.admin-sidebar h4 i { color: #a9cfaf; }
+.admin-sidebar .nav { gap: 5px; }.admin-sidebar .nav-link { padding: 11px 12px; border-radius: 8px; color: #cfe0d1 !important; font-size: .84rem; font-weight: 700; transition: color .2s, background .2s; }.admin-sidebar .nav-link:hover { background: rgba(255, 255, 255, .11); color: #fff !important; }.admin-sidebar .nav-link i { width: 18px; color: #9fc6a7; }
+.admin-main { flex: 1; min-width: 0; min-height: calc(100vh - 78px); padding: 42px clamp(24px, 5vw, 64px); overflow: auto; }.admin-main > .container { max-width: 1160px; padding: 0; margin: 0 !important; }.admin-main h2, .admin-main h3 { color: #203126; font-family: Georgia, serif; font-weight: 600; letter-spacing: -.035em; }.admin-main .card { overflow: hidden; border: 1px solid #dfe7df; border-radius: 13px; box-shadow: 0 10px 24px rgba(29, 64, 45, .05) !important; }.admin-main .card-img-top { transition: transform .3s ease; }.admin-main .card:hover .card-img-top { transform: scale(1.025); }.admin-main .card-body { padding: 1.25rem; }.admin-main .card-title { color: #26372b; font-family: Georgia, serif; font-weight: 600; }.admin-main .card-text, .admin-main .text-muted { color: #718077 !important; }.admin-main .badge { border-radius: 99px; font-size: .66rem; letter-spacing: .04em; }.admin-main .btn { border-radius: 7px; font-size: .76rem; font-weight: 750; }.admin-main .btn-primary, .admin-main .btn-success { border-color: #214d35; background: #214d35; }.admin-main .btn-primary:hover, .admin-main .btn-success:hover { border-color: #183d2a; background: #183d2a; }.admin-main .btn-warning { border-color: #e7c56a; background: #f7dc90; color: #5b4819; }.admin-main .btn-danger { border-color: #dfb4af; background: #fff5f4; color: #a44239; }.admin-main .form-control, .admin-main .form-select { min-height: 43px; border-color: #d6e1d7; border-radius: 8px; }.admin-main .form-control:focus, .admin-main .form-select:focus { border-color: #4d8964; box-shadow: 0 0 0 3px rgba(77, 137, 100, .13); }.admin-main .form-label { color: #3c5142; font-size: .8rem; font-weight: 750; }
+@media (max-width: 700px) { .admin-layout { display: block; }.admin-sidebar { position: static; width: 100%; height: auto; padding: 18px 15px !important; border-right: 0; }.admin-sidebar h4 { display: none; }.admin-sidebar .nav { display: flex; flex-direction: row !important; flex-wrap: nowrap; overflow-x: auto; }.admin-sidebar .nav-link { white-space: nowrap; }.admin-main { min-height: 0; padding: 30px 15px; } }
 
-/* Sidebar */
-.admin-sidebar {
-  width: 250px;
-  flex-shrink: 0;
-
-  position: sticky;
-  top: 0;
-
-  height: 100vh;
-
-  overflow-y: auto;
-}
-
-/* Main content */
-.admin-main {
-  flex: 1;
-  min-width: 0;
-
-  height: 100vh;
-  overflow-y: auto;
-
-  padding: 1.5rem;
-}
+.admin-page-header { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 30px; }.admin-page-kicker { margin: 0 0 8px; color: #4d8964; font-size: .68rem; font-weight: 800; letter-spacing: .12em; }.admin-page-header h2 { margin: 0 0 8px; font-size: 2.25rem; }.admin-page-description { margin: 0; color: #718077; font-size: .88rem; }.admin-article-count { flex: 0 0 auto; padding: 8px 12px; border-radius: 99px; background: #e5f0e6; color: #316b46; font-size: .73rem; font-weight: 800; }.admin-article-grid { row-gap: 20px; }.admin-article-card { min-height: 100%; }.admin-article-card .card-img-top, .admin-article-image-placeholder { height: 195px; object-fit: cover; }.admin-article-image-placeholder { display: grid; place-items: center; background: #edf3ed; color: #859187; font-size: .78rem; }.admin-article-card-topline { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 13px; }.admin-status { padding: 5px 8px; border-radius: 99px; font-size: .64rem; font-weight: 800; letter-spacing: .04em; text-transform: capitalize; }.admin-status-published { background: #e2f1e4; color: #286340; }.admin-status-draft { background: #edf0ed; color: #657167; }.admin-status-scheduled { background: #e5edf8; color: #456892; }.admin-article-category { overflow: hidden; color: #78867d; font-size: .69rem; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }.admin-article-card .card-title { display: -webkit-box; overflow: hidden; font-size: 1.22rem; line-height: 1.22; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }.admin-article-card .card-text { display: -webkit-box; overflow: hidden; min-height: 3.9em; line-height: 1.55; -webkit-box-orient: vertical; -webkit-line-clamp: 3; }.admin-article-actions { display: flex; flex-wrap: wrap; gap: 7px; padding-top: 18px; }.admin-empty-state { padding: 62px 24px; border: 1px dashed #c9d7cb; border-radius: 14px; background: #fff; text-align: center; }.admin-empty-state h4 { margin: 0 0 8px; }.admin-empty-state p { margin: 0 0 20px; color: #718077; font-size: .88rem; }.admin-pagination { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 34px; }.admin-pagination-pages { display: flex; gap: 6px; }.admin-pagination-button, .admin-page-number { min-width: 36px; height: 36px; border: 1px solid #d7e2d8; border-radius: 8px; background: #fff; color: #496050; cursor: pointer; font: 800 .74rem/1 var(--sans); transition: background .2s, border-color .2s, color .2s; }.admin-pagination-button { padding: 0 12px; }.admin-pagination-button:hover:not(:disabled), .admin-page-number:hover { border-color: #adc5b2; background: #edf5ee; color: #24583a; }.admin-page-number.active { border-color: #214d35; background: #214d35; color: #fff; }.admin-pagination-button:disabled { cursor: not-allowed; opacity: .45; }.admin-pagination-button:focus-visible, .admin-page-number:focus-visible { outline: 3px solid rgba(66, 126, 92, .4); outline-offset: 2px; }@media (max-width: 600px) { .admin-page-header { align-items: start; flex-direction: column; margin-bottom: 24px; }.admin-page-header h2 { font-size: 1.9rem; }.admin-pagination { gap: 7px; }.admin-pagination-button { padding: 0 9px; }.admin-pagination-pages { gap: 4px; } }
