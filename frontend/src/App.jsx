@@ -17,11 +17,11 @@ import Scheduled from "./admin/pages/Scheduled";
 import Categories from "./admin/pages/Categories";
 import Article from "./admin/pages/Articles";
 import AdminBookmark from "./admin/pages/AdminBookmark";
-import EditArticle from "./admin/pages/EditArticle"
+import EditArticle from "./admin/pages/EditArticle";
 import Footer from "./components/Footer";
-
-
-
+import ForgotPassword from "./pages/ForgotPassword";
+import VerifyOTP from "./pages/VerifyOTP";
+import ResetPassword from "./pages/ResetPassword";
 
 function App() {
   return (
@@ -34,6 +34,9 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/create" element={<CreateArticle />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/verify-otp" element={<VerifyOTP />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         {/* User Dashboard */}
         <Route
           path="/dashboard/*"
@@ -65,9 +68,8 @@ function App() {
           <Route path="adminbookmark" element={<AdminBookmark />} />
           <Route path="articles/edit/:id" element={<EditArticle />} />
         </Route>
-      </Routes> 
-     <Footer/>
-      
+      </Routes>
+      <Footer />
     </BrowserRouter>
   );
 }

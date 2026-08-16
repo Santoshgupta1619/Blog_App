@@ -405,9 +405,6 @@ export const updateArticle = async (req, res) => {
       scheduled_at,
     } = req.body;
 
-    // =========================
-    // CATEGORY
-    // =========================
 
     let category_id;
 
@@ -426,10 +423,6 @@ export const updateArticle = async (req, res) => {
 
       category_id = newCategory.rows[0].id;
     }
-
-    // =========================
-    // UPDATE ARTICLE
-    // =========================
 
     const result = await pool.query(
       `UPDATE articles
@@ -464,9 +457,6 @@ export const updateArticle = async (req, res) => {
 
     const article = result.rows[0];
 
-    // =========================
-    // UPDATE TAGS
-    // =========================
 
     // Remove existing tags
     await pool.query(

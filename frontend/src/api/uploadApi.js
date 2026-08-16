@@ -5,4 +5,4 @@ export const uploadImage = (file) => {
   formData.append("image", file);
 
   return API.post("/upload", formData);
-};
+};   

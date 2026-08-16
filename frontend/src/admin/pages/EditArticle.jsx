@@ -20,9 +20,7 @@ const EditArticle = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
-  // =========================
-  // FETCH ARTICLE
-  // =========================
+
   useEffect(() => {
     const fetchArticle = async () => {
       try {
@@ -73,9 +71,6 @@ const EditArticle = () => {
     fetchArticle();
   }, [id]);
 
-  // =========================
-  // ADD TAG
-  // =========================
   const handleAddTag = (e) => {
     if (e.key === "Enter" && tagInput.trim() !== "") {
       e.preventDefault();
@@ -90,16 +85,12 @@ const EditArticle = () => {
     }
   };
 
-  // =========================
-  // REMOVE TAG
-  // =========================
+
   const removeTag = (tagToRemove) => {
     setTags(tags.filter((tag) => tag !== tagToRemove));
   };
 
-  // =========================
-  // SAVE CHANGES
-  // =========================
+  
   const handleSave = async () => {
     if (!title.trim()) {
       alert("Please enter a title");
@@ -161,9 +152,7 @@ const EditArticle = () => {
     }
   };
 
-  // =========================
-  // LOADING
-  // =========================
+ 
   if (loading) {
     return (
       <div className="container mt-5">
@@ -172,9 +161,6 @@ const EditArticle = () => {
     );
   }
 
-  // =========================
-  // UI
-  // =========================
   return (
     <div className="container mt-5">
 

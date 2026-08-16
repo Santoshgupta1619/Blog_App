@@ -24,9 +24,6 @@ const AdminBookmark = () => {
     fetchBookmarks();
   }, []);
 
-  // =========================
-  // LOADING
-  // =========================
 
   if (loading) {
     return (
@@ -43,10 +40,6 @@ const AdminBookmark = () => {
       </div>
     );
   }
-
-  // =========================
-  // PAGE
-  // =========================
 
   return (
     <div>

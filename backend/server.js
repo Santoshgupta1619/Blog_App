@@ -1,9 +1,9 @@
+import "dotenv/config";
 import app from "./src/app.js";
-import dotenv from "dotenv";
+
 import publishScheduledArticles from "./src/services/scheduler.js";
 
-dotenv.config();
-
+// dotenv.config();
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {

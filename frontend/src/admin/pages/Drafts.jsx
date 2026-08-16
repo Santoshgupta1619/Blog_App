@@ -8,9 +8,7 @@ const Drafts = () => {
 
   const navigate = useNavigate();
 
-  // =========================
-  // FETCH DRAFTS
-  // =========================
+
   const fetchDrafts = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -36,9 +34,7 @@ const Drafts = () => {
     fetchDrafts();
   }, []);
 
-  // =========================
-  // DELETE DRAFT
-  // =========================
+
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this draft?"
@@ -69,9 +65,6 @@ const Drafts = () => {
     }
   };
 
-  // =========================
-  // LOADING
-  // =========================
   if (loading) {
     return (
       <div className="container mt-4">
@@ -80,9 +73,6 @@ const Drafts = () => {
     );
   }
 
-  // =========================
-  // UI
-  // =========================
   return (
     <div className="container mt-4">
 

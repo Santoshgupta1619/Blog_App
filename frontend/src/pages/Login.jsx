@@ -24,19 +24,13 @@ const Login = () => {
 
       // SAVE TOKEN
       localStorage.setItem("token", res.data.token);
-      localStorage.setItem(
-        "user",
-        JSON.stringify(res.data.user)
-      );
+      localStorage.setItem("user", JSON.stringify(res.data.user));
 
-      // ✅ After login, go to homepage
       navigate("/");
     } catch (err) {
       console.error(err);
 
-      alert(
-        err.response?.data?.message || "Login failed"
-      );
+      alert(err.response?.data?.message || "Login failed");
     }
   };
 
@@ -70,6 +64,17 @@ const Login = () => {
             value={form.password}
             onChange={handleChange}
           />
+          <p className="forgot-password">
+            <a
+              href="/forgot-password"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate("/forgot-password");
+              }}
+            >
+              Forgot Password?
+            </a>
+          </p>
         </div>
 
         <button className="auth-submit" onClick={handleSubmit}>
@@ -77,7 +82,10 @@ const Login = () => {
         </button>
 
         <p className="auth-switch">
-          New here? <button onClick={() => navigate("/register")}>Create an account</button>
+          New here?{" "}
+          <button onClick={() => navigate("/register")}>
+            Create an account
+          </button>
         </p>
       </div>
     </div>
