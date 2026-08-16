@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createArticle } from "../api/articleApi";
 import { uploadImage } from "../api/uploadApi";
 import { useNavigate } from "react-router-dom";
 import "./CreateArticle.css";
+import { getCategories } from "../api/categoryApi";
 
 const CreateArticle = () => {
   const navigate = useNavigate();
@@ -16,8 +17,9 @@ const CreateArticle = () => {
   const [imageUrl, setImageUrl] = useState("");
   const [uploading, setUploading] = useState(false);
 
-
   const [category, setCategory] = useState("");
+const [categories, setCategories] = useState([]);
+
 
   const [tags, setTags] = useState([]);
   const [tagInput, setTagInput] = useState("");
@@ -27,6 +29,19 @@ const CreateArticle = () => {
   const [scheduledAt, setScheduledAt] = useState("");
 
   const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+  fetchCategories();
+}, []);
+
+const fetchCategories = async () => {
+  try {
+    const res = await getCategories();
+    setCategories(res.data);
+  } catch (err) {
+    console.error("GET CATEGORIES ERROR:", err);
+  }
+};
 
 
   const handleAddTag = (e) => {
@@ -251,15 +266,19 @@ const CreateArticle = () => {
             Category
           </label>
 
-          <input
-            type="text"
-            className="form-control"
-            placeholder="e.g. Technology"
-            value={category}
-            onChange={(e) =>
-              setCategory(e.target.value)
-            }
-          />
+          <select
+  className="form-select"
+  value={category}
+  onChange={(e) => setCategory(e.target.value)}
+>
+  <option value="">Select Category</option>
+
+  {categories.map((cat) => (
+    <option key={cat.id} value={cat.name}>
+      {cat.name}
+    </option>
+  ))}
+</select>
         </div>
 
       

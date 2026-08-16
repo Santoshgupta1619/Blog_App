@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import { getCategories } from "../../api/categoryApi";
 
 const EditArticle = () => {
   const { id } = useParams();
@@ -10,6 +11,7 @@ const EditArticle = () => {
   const [content, setContent] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [category, setCategory] = useState("");
+  const [categories, setCategories] = useState([]);
 
   const [tags, setTags] = useState([]);
   const [tagInput, setTagInput] = useState("");
@@ -20,56 +22,64 @@ const EditArticle = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
+  const fetchCategories = async () => {
+  try {
+    const res = await getCategories();
+    setCategories(res.data);
+  } catch (err) {
+    console.error("GET CATEGORIES ERROR:", err);
+  }
+};
+
 
   useEffect(() => {
-    const fetchArticle = async () => {
-      try {
-        const token = localStorage.getItem("token");
+  const fetchArticle = async () => {
+    try {
+      const token = localStorage.getItem("token");
 
-        const res = await axios.get(
-          `http://localhost:5000/api/admin/articles/${id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        const article = res.data;
-
-        setTitle(article.title || "");
-        setContent(article.content || "");
-        setImageUrl(article.image_url || "");
-        setCategory(article.category || "");
-
-        setStatus(article.status || "published");
-
-        if (article.scheduled_at) {
-          const date = new Date(article.scheduled_at);
-
-          // Convert to datetime-local format
-          const formattedDate = new Date(
-            date.getTime() - date.getTimezoneOffset() * 60000
-          )
-            .toISOString()
-            .slice(0, 16);
-
-          setScheduledAt(formattedDate);
+      const res = await axios.get(
+        `http://localhost:5000/api/admin/articles/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
+      );
 
-        // Tags will be handled once getArticleById returns them.
-        setTags(article.tags || []);
+      const article = res.data;
 
-      } catch (err) {
-        console.error("FETCH ARTICLE ERROR:", err);
-        alert("Failed to load article");
-      } finally {
-        setLoading(false);
+      setTitle(article.title || "");
+      setContent(article.content || "");
+      setImageUrl(article.image_url || "");
+      setCategory(article.category || "");
+      setStatus(article.status || "published");
+
+      if (article.scheduled_at) {
+        const date = new Date(article.scheduled_at);
+
+        const formattedDate = new Date(
+          date.getTime() - date.getTimezoneOffset() * 60000
+        )
+          .toISOString()
+          .slice(0, 16);
+
+        setScheduledAt(formattedDate);
       }
-    };
 
-    fetchArticle();
-  }, [id]);
+      setTags(article.tags || []);
+
+    } catch (err) {
+      console.error("FETCH ARTICLE ERROR:", err);
+      alert("Failed to load article");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchCategories();
+  fetchArticle();
+
+}, [id]);
 
   const handleAddTag = (e) => {
     if (e.key === "Enter" && tagInput.trim() !== "") {
@@ -238,15 +248,19 @@ const EditArticle = () => {
             Category
           </label>
 
-          <input
-            type="text"
-            className="form-control"
-            value={category}
-            onChange={(e) =>
-              setCategory(e.target.value)
-            }
-            placeholder="e.g. Technology"
-          />
+          <select
+  className="form-select"
+  value={category}
+  onChange={(e) => setCategory(e.target.value)}
+>
+  <option value="">Select Category</option>
+
+  {categories.map((cat) => (
+    <option key={cat.id} value={cat.name}>
+      {cat.name}
+    </option>
+  ))}
+</select>
         </div>
 
         {/* TAGS */}
