@@ -75,7 +75,7 @@ const Navbar = () => {
                   onClick={() => navigate("/create")}
                 >
                   <span className="nav-icon">✍️</span>
-                  <span className="btn-text">Write</span>
+                  <span className="btn-text">Create Post</span>
                 </button>
               </>
             )}
