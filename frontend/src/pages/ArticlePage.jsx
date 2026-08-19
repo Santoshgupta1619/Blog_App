@@ -165,9 +165,12 @@ const handleBookmark = async () => {
         />
 
         {/* CONTENT */}
-        <div className="article-content">
-          {article.content}
-        </div>
+        <div
+  className="article-content"
+  dangerouslySetInnerHTML={{
+    __html: article.content,
+  }}
+/>
 
         <button onClick={handlePostLike}>
   {article.is_liked ? "❤️" : "🤍"} {article.like_count || 0}

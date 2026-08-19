@@ -1,0 +1,141 @@
+.editor-toolbar {
+  position: sticky;
+  top: 70px; /* adjust to your navbar height */
+
+  z-index: 100;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  padding: 12px;
+
+  background: #ffffff;
+
+  border: 1px solid #dfe4e8;
+  border-radius: 10px;
+
+  box-shadow: 0 6px 18px rgba(0,0,0,.08);
+
+  margin-bottom: 15px;
+}
+
+.editor-toolbar button{
+    width:40px;
+    height:40px;
+
+    border:none;
+
+    border-radius:8px;
+
+    background:white;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    transition:.2s;
+}
+
+.editor-toolbar button:hover{
+    background:#eef3ef;
+}
+
+.editor-content{
+
+    border:1px solid #dfe3e8;
+
+    border-radius:12px;
+
+    overflow:hidden;
+
+    background:white;
+}
+
+.editor-content .tiptap{
+
+    min-height:450px;
+
+    padding:30px;
+
+    font-size:18px;
+
+    line-height:1.9;
+
+    outline:none;
+}
+
+.editor-content .tiptap p {
+  margin: 0 0 1rem;
+}
+
+.editor-content .tiptap h1,
+.editor-content .tiptap h2,
+.editor-content .tiptap h3 {
+  margin: 1rem 0;
+}
+
+.editor-content .tiptap blockquote {
+  border-left: 4px solid #214d35;
+  margin: 1rem 0;
+  padding-left: 1rem;
+  color: #666;
+}
+
+.editor-content .tiptap img {
+  max-width: 100%;
+  border-radius: 8px;
+}
+
+.editor-content .tiptap h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin: 1.5rem 0 1rem;
+}
+
+.editor-content .tiptap h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 1.3rem 0 0.8rem;
+}
+
+.editor-content .tiptap h3 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 1rem 0 0.7rem;
+}
+
+.editor-toolbar button.active{
+    background:#214d35;
+    color:white;
+}
+
+.tiptap img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+
+  border-radius: 12px;
+  margin: 20px 0;
+}
+
+.tiptap figure {
+  margin: 0;
+}
+
+.editor-toolbar button i{
+    font-size:18px;
+}
+
+.toolbar-group{
+    display:flex;
+    gap:6px;
+    align-items:center;
+}
+
+.toolbar-divider{
+    width:1px;
+    height:26px;
+    background:#d9d9d9;
+    margin:0 6px;
+}

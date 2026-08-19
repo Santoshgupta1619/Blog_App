@@ -1,0 +1,94 @@
+.resizable-image-wrapper {
+  position: relative;
+  width: 100%;
+  margin: 20px 0;
+}
+
+.resizable-image-wrapper img {
+  display: block;
+  max-width: 100%;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+
+.image-left img {
+  display: block;
+  margin-left: 0;
+  margin-right: auto;
+}
+
+.image-center img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.image-right img {
+  display: block;
+  margin-left: auto;
+  margin-right: 0;
+}
+.image-toolbar{
+    display:flex;
+    justify-content:center;
+    gap:8px;
+    margin-bottom:10px;
+}
+
+.image-toolbar button{
+    padding:6px 12px;
+    border:none;
+    border-radius:6px;
+    background:#214d35;
+    color:#fff;
+    cursor:pointer;
+}
+
+.image-toolbar button:hover {
+  background: #f2f2f2;
+}
+
+
+
+.floating-toolbar {
+  position: absolute;
+  top: -52px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  display: flex;
+  gap: 8px;
+
+  padding: 6px;
+
+  border-radius: 10px;
+
+  background: white;
+
+  box-shadow: 0 6px 18px rgba(0,0,0,.15);
+
+  z-index: 1000;
+}
+
+.floating-toolbar button {
+  width: 36px;
+  height: 36px;
+
+  border: none;
+  border-radius: 8px;
+
+  background: transparent;
+
+  cursor: pointer;
+
+  transition: .2s;
+}
+
+.floating-toolbar button:hover {
+  background: #f3f3f3;
+}
+
+.floating-toolbar i {
+  font-size: 18px;
+}

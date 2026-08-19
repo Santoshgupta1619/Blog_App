@@ -1,9 +1,18 @@
 import API from "./axios";
 
 
-export const getArticles = (page = 1, category = "") =>
+// export const getArticles = (page = 1, category = "") =>
+//   API.get(
+//     `/articles?page=${page}&limit=5&category=${encodeURIComponent(category)}`
+//   );
+
+export const getArticles = (
+  page = 1,
+  category = "",
+  limit = 5
+) =>
   API.get(
-    `/articles?page=${page}&limit=5&category=${encodeURIComponent(category)}`
+    `/articles?page=${page}&limit=${limit}&category=${encodeURIComponent(category)}`
   );
 
 export const getCategories = () =>

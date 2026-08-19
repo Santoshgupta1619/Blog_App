@@ -4,6 +4,7 @@ import { uploadImage } from "../api/uploadApi";
 import { useNavigate } from "react-router-dom";
 import "./CreateArticle.css";
 import { getCategories } from "../api/categoryApi";
+import RichTextEditor from "../components/RichTextEditor";
 
 const CreateArticle = () => {
   const navigate = useNavigate();
@@ -205,16 +206,13 @@ const CreateArticle = () => {
         </div>
 
         <div className="mb-3">
-          <label className="form-label">Content</label>
+  <label className="form-label">Content</label>
 
-          <textarea
-            className="form-control"
-            rows="8"
-            placeholder="Write your article..."
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          />
-        </div>
+  <RichTextEditor
+    value={content}
+    onChange={setContent}
+  />
+</div>
 
         <div className="mb-3">
           <label className="form-label">Category</label>
