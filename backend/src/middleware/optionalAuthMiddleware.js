@@ -5,7 +5,7 @@ export const optionalAuthMiddleware = (req, res, next) => {
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
-      req.user = null; // 👈 important
+      req.user = null; 
       return next();
     }
 
@@ -20,7 +20,7 @@ export const optionalAuthMiddleware = (req, res, next) => {
 
     next();
   } catch (err) {
-    req.user = null; // 👈 don't block request
+    req.user = null; 
     next();
   }
 };

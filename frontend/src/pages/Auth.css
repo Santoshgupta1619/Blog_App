@@ -130,6 +130,12 @@
   outline: 3px solid rgba(66, 126, 92, 0.45);
   outline-offset: 3px;
 }
+.auth-submit:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
 .auth-switch {
   margin: 22px 0 0;
   color: #738078;
@@ -188,4 +194,61 @@
 .otp-input:focus {
   border-color: #2563eb;
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+
+/* =========================================================
+   EMAIL VERIFICATION
+========================================================= */
+
+.verify-email-box {
+  text-align: center;
+}
+
+.verify-email-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.verify-email-content .auth-heading {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.verify-email-content .auth-heading > p:last-child {
+  margin-bottom: 0;
+}
+
+.verify-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 24px;
+  border-radius: 50%;
+  font-size: 1.7rem;
+  font-weight: 800;
+}
+
+.verify-icon.verifying {
+  color: #397052;
+  background: #edf3ee;
+  font-size: 1.2rem;
+  letter-spacing: 3px;
+}
+
+.verify-icon.success {
+  color: #214d35;
+  background: #e5f1e8;
+}
+
+.verify-icon.error {
+  color: #9b3f38;
+  background: #f8e8e6;
+}
+
+.verify-email-content .auth-submit {
+  margin-top: 28px;
 }

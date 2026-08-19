@@ -22,6 +22,7 @@ import Footer from "./components/Footer";
 import ForgotPassword from "./pages/ForgotPassword";
 import VerifyOTP from "./pages/VerifyOTP";
 import ResetPassword from "./pages/ResetPassword";
+import VerifyEmail from "./pages/VerifyEmail";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/verify-otp" element={<VerifyOTP />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/verify-email/:token" element={<VerifyEmail />} />
         {/* User Dashboard */}
         <Route
           path="/dashboard/*"

@@ -332,7 +332,7 @@ const EditArticle = () => {
 
         {/* BUTTONS */}
         <div className="d-flex gap-2">
-          <button
+          <button 
             className="btn btn-success"
             onClick={handleSave}
             disabled={saving || uploading}

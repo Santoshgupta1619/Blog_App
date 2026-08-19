@@ -8,7 +8,7 @@ const adminOrOwner = async (req, res, next) => {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
-    // ✅ FETCH COMMENT OWNER (FIXED)
+    
     const result = await pool.query(
       "SELECT author_id FROM comments WHERE id = $1",
       [id]

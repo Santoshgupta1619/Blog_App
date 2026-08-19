@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import {
   getArticles,
@@ -24,9 +23,6 @@ const Home = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedTag, setSelectedTag] = useState(null);
 
-  const [categoryArticles, setCategoryArticles] = useState({});
-const [categoryLoading, setCategoryLoading] = useState(false);
-
   useEffect(() => {
     fetchArticles();
   }, [page, selectedCategory]);
@@ -46,7 +42,7 @@ const [categoryLoading, setCategoryLoading] = useState(false);
 
       const res = await getArticles(
         page,
-        selectedCategory === "All" ? "" : selectedCategory
+        selectedCategory === "All" ? "" : selectedCategory,7
       );
 
       setArticles(res.data.data || []);
@@ -59,23 +55,19 @@ const [categoryLoading, setCategoryLoading] = useState(false);
   };
 
   const fetchCategories = async () => {
-  try {
-    const res = await getCategories();
+    try {
+      const res = await getCategories();
 
-    const categoryList = [
-      "All",
-      ...(res.data || []).map(
-        (category) => category.name
-      ),
-    ];
+      const categoryList = [
+        "All",
+        ...(res.data || []).map((category) => category.name),
+      ];
 
-    setCategories(categoryList);
-
-    await fetchCategoryArticles(categoryList);
-  } catch (err) {
-    console.error("Error fetching categories:", err);
-  }
-};
+      setCategories(categoryList);
+    } catch (err) {
+      console.error("Error fetching categories:", err);
+    }
+  };
 
   const fetchTrendingArticles = async () => {
     try {
@@ -86,54 +78,6 @@ const [categoryLoading, setCategoryLoading] = useState(false);
       console.error("Error fetching trending articles:", err);
     }
   };
-
-  const fetchCategoryArticles = async (categoryList) => {
-  try {
-    setCategoryLoading(true);
-
-    const categoriesToLoad = categoryList.filter(
-      (category) => category !== "All"
-    );
-
-    const results = await Promise.all(
-      categoriesToLoad.map(async (category) => {
-        try {
-          const res = await getArticles(1, category, 4);
-
-          return {
-            category,
-            articles: res.data.data || [],
-          };
-        } catch (error) {
-          console.error(
-            `Error fetching ${category} articles:`,
-            error
-          );
-
-          return {
-            category,
-            articles: [],
-          };
-        }
-      })
-    );
-
-    const groupedArticles = {};
-
-    results.forEach(({ category, articles }) => {
-      groupedArticles[category] = articles;
-    });
-
-    setCategoryArticles(groupedArticles);
-  } catch (err) {
-    console.error(
-      "Error fetching category sections:",
-      err
-    );
-  } finally {
-    setCategoryLoading(false);
-  }
-};
 
   const filteredArticles = selectedTag
     ? articles.filter((article) =>
@@ -319,7 +263,7 @@ const [categoryLoading, setCategoryLoading] = useState(false);
 
               <div className="latest-grid">
 
-                {regularArticles.slice(0, 3).map((article) => (
+                {regularArticles.slice(0, 6).map((article) => (
                   <article
                     key={article.id}
                     className="latest-card"
@@ -427,161 +371,10 @@ const [categoryLoading, setCategoryLoading] = useState(false);
             )}
 
             {/* =====================================================
-    CATEGORY SECTIONS
-====================================================== */}
-
-{!categoryLoading &&
-  categories
-    .filter((category) => category !== "All")
-    .map((category) => {
-      const categoryPosts =
-        categoryArticles[category] || [];
-
-      if (categoryPosts.length === 0) {
-        return null;
-      }
-
-      return (
-        <section
-          key={category}
-          className="editorial-section category-editorial-section"
-        >
-          <div className="section-heading">
-            <span>{category}</span>
-            <div></div>
-
-            <button
-              className="view-category"
-              onClick={() => {
-                setSelectedCategory(category);
-                setSelectedTag(null);
-                setPage(1);
-                window.scrollTo({
-                  top: 0,
-                  behavior: "smooth",
-                });
-              }}
-            >
-              View all →
-            </button>
-          </div>
-
-          <div className="category-editorial-grid">
-
-            {/* Main story */}
-            {categoryPosts[0] && (
-              <article
-                className="category-main-story"
-                onClick={() =>
-                  openArticle(
-                    categoryPosts[0].slug
-                  )
-                }
-              >
-                <div className="category-main-image">
-                  {categoryPosts[0].image_url ? (
-                    <img
-                      src={categoryPosts[0].image_url}
-                      alt={categoryPosts[0].title}
-                    />
-                  ) : (
-                    <div className="image-placeholder">
-                      <span>
-                        THE INDIAN GUIDE
-                      </span>
-                    </div>
-                  )}
-                </div>
-
-                <div className="category-main-content">
-
-                  <div className="article-category">
-                    {category}
-                  </div>
-
-                  <h2>
-                    {categoryPosts[0].title}
-                  </h2>
-
-                  <p>
-                    {htmlToText(
-                      categoryPosts[0].content || ""
-                    ).slice(0, 150)}
-                    ...
-                  </p>
-
-                  <div className="editorial-meta">
-                    <span>
-                      {dayjs(
-                        categoryPosts[0].created_at
-                      ).format("MMM D, YYYY")}
-                    </span>
-                  </div>
-
-                </div>
-              </article>
-            )}
-
-            {/* Smaller stories */}
-            <div className="category-side-stories">
-
-              {categoryPosts
-                .slice(1, 4)
-                .map((article) => (
-                  <article
-                    key={article.id}
-                    className="category-side-story"
-                    onClick={() =>
-                      openArticle(article.slug)
-                    }
-                  >
-                    <div className="category-side-image">
-                      {article.image_url ? (
-                        <img
-                          src={article.image_url}
-                          alt={article.title}
-                        />
-                      ) : (
-                        <div className="image-placeholder">
-                          <span>TIG</span>
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="category-side-content">
-
-                      <div className="article-category">
-                        {category}
-                      </div>
-
-                      <h3>
-                        {article.title}
-                      </h3>
-
-                      <div className="editorial-meta">
-                        <span>
-                          {dayjs(
-                            article.created_at
-                          ).format("MMM D")}
-                        </span>
-                      </div>
-
-                    </div>
-                  </article>
-                ))}
-
-            </div>
-
-          </div>
-        </section>
-      );
-    })}
-
-            {/* =====================================================
                 CURRENT ARTICLE LIST
             ====================================================== */}
 
-            {regularArticles.length > 3 && (
+            {regularArticles.length > 6 && (
               <section className="editorial-section more-stories-section">
 
                 <div className="section-heading">
@@ -591,7 +384,7 @@ const [categoryLoading, setCategoryLoading] = useState(false);
 
                 <div className="more-stories">
 
-                  {regularArticles.slice(3).map((article) => (
+                  {regularArticles.slice(6).map((article) => (
                     <article
                       key={article.id}
                       className="more-story"

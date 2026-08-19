@@ -14,3 +14,6 @@ export const verifyOTP = (data) =>
 
 export const resetPassword = (data) =>
   API.post("/auth/reset-password", data);
+
+export const verifyEmail = (token) =>
+  API.get(`/auth/verify-email/${token}`);
