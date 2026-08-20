@@ -257,6 +257,16 @@ export const resetPassword = async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    const passwordRegex =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/;
+
+if (!passwordRegex.test(password)) {
+  return res.status(400).json({
+    message:
+      "Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number, and one special character.",
+  });
+}
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
     await pool.query(

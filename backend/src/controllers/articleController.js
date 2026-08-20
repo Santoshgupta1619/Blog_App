@@ -662,3 +662,74 @@ export const getAdminBookmarks = async (req, res) => {
     });
   }
 };
+
+// ======================================================
+// HOMEPAGE FEATURED CATEGORY
+// ======================================================
+
+export const getHomepageCategory = async (req, res) => {
+  try {
+    // Find the category with the most published articles
+    const categoryResult = await pool.query(`
+      SELECT
+        c.id,
+        c.name,
+        COUNT(a.id) AS total_articles
+      FROM categories c
+      JOIN articles a
+        ON a.category_id = c.id
+      WHERE a.status = 'published'
+      GROUP BY c.id
+      ORDER BY COUNT(a.id) DESC, c.name ASC
+      LIMIT 1
+    `);
+
+    if (categoryResult.rows.length === 0) {
+      return res.json({
+        category: null,
+        articles: [],
+      });
+    }
+
+    const category = categoryResult.rows[0];
+
+    const articlesResult = await pool.query(
+      `
+      SELECT
+        a.id,
+        a.title,
+        a.slug,
+        a.content,
+        a.image_url,
+        a.created_at,
+        c.name AS category
+
+      FROM articles a
+
+      JOIN categories c
+        ON c.id = a.category_id
+
+      WHERE
+        a.status = 'published'
+        AND c.id = $1
+
+      ORDER BY a.created_at DESC
+
+      LIMIT 4
+      `,
+      [category.id]
+    );
+
+    res.json({
+      category: category.name,
+      articles: articlesResult.rows,
+    });
+
+  } catch (err) {
+    console.error("GET HOMEPAGE CATEGORY ERROR:", err);
+
+    res.status(500).json({
+      error: err.message,
+    });
+  }
+};

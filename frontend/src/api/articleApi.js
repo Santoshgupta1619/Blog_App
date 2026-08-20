@@ -21,6 +21,9 @@ export const getCategories = () =>
 export const getTrendingArticles = () =>
   API.get("/articles/trending");
 
+export const getHomepageCategory = () =>
+  API.get("/articles/home-category");
+
 export const getArticleBySlug = (slug) =>
   API.get(`/articles/${slug}`);
 

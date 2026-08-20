@@ -111,10 +111,27 @@ export const updatePassword = async (req, res) => {
     const user_id = req.user.id;
     const { currentPassword, newPassword } = req.body;
 
+    // Password Validation
+    const passwordRegex =
+      /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/;
+
+    if (!passwordRegex.test(newPassword)) {
+      return res.status(400).json({
+        message:
+          "Password must be at least 8 characters long and contain at least one uppercase letter, one number, and one special character.",
+      });
+    }
+
     const userRes = await pool.query(
       `SELECT password FROM users WHERE id = $1`,
       [user_id]
     );
+
+    if (userRes.rows.length === 0) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
 
     const valid = await bcrypt.compare(
       currentPassword,
@@ -122,18 +139,29 @@ export const updatePassword = async (req, res) => {
     );
 
     if (!valid) {
-      return res.status(400).json({ message: "Wrong password" });
+      return res.status(400).json({
+        message: "Current password is incorrect",
+      });
     }
 
     const hashed = await bcrypt.hash(newPassword, 10);
 
     await pool.query(
-      `UPDATE users SET password = $1 WHERE id = $2`,
+      `UPDATE users
+       SET password = $1
+       WHERE id = $2`,
       [hashed, user_id]
     );
 
-    res.json({ message: "Password updated" });
+    res.json({
+      message: "Password updated successfully",
+    });
+
   } catch (err) {
-    res.status(500).json({ error: "Failed to update password" });
+    console.error(err);
+
+    res.status(500).json({
+      error: "Failed to update password",
+    });
   }
 };

@@ -6,7 +6,7 @@ const Footer = () => {
       <div className="footer-container">
         <div className="footer-main">
           <div className="footer-brand">
-            <h4 className="footer-title">Indian Technology Guide</h4>
+            <h4 className="footer-title">India Technology Guide</h4>
           </div>
 
           <div className="footer-nav" aria-label="Footer navigation">
@@ -16,7 +16,7 @@ const Footer = () => {
         </div>
 
         <div className="footer-bottom">
-          <p className="footer-copy">© 2026 Indian Technology Guide. All Rights Reserved.</p>
+          <p className="footer-copy">© 2026 India Technology Guide. All Rights Reserved.</p>
 
           <div className="footer-social" aria-label="Social links">
             <a href="#" aria-label="Facebook"><i className="bi bi-facebook"></i></a>

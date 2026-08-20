@@ -4,7 +4,8 @@ import {
   getPublishedArticles, 
   getArticleBySlug,
   getCategories,
-  getTrendingArticles 
+  getTrendingArticles,
+  getHomepageCategory 
 } from "../controllers/articleController.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 import { updateArticle,toggleLikePost, toggleBookmark } from "../controllers/articleController.js";
@@ -22,6 +23,7 @@ router.post("/", authMiddleware,adminMiddleware, createArticle);
 router.get("/categories", getCategories);
 
 router.get("/trending", getTrendingArticles);
+router.get("/home-category", getHomepageCategory);
 
 router.get("/", getPublishedArticles);
 

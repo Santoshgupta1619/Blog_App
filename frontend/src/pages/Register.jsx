@@ -10,6 +10,11 @@ const Register = () => {
     password: "",
   });
 
+  const [passwordError, setPasswordError] = useState("");
+
+const passwordRegex =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/;
+
   const [registered, setRegistered] = useState(false);
   const [registeredEmail, setRegisteredEmail] = useState("");
   const [loading, setLoading] = useState(false);
@@ -17,17 +22,38 @@ const Register = () => {
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
-  };
+  const { name, value } = e.target;
+
+  setForm((prev) => ({
+    ...prev,
+    [name]: value,
+  }));
+
+  if (name === "password") {
+    if (value === "") {
+      setPasswordError("");
+    } else if (!passwordRegex.test(value)) {
+      setPasswordError(
+        "Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number, and one special character."
+      );
+    } else {
+      setPasswordError("");
+    }
+  }
+};
 
   const handleSubmit = async () => {
     if (!form.name || !form.email || !form.password) {
       alert("Please fill in all fields.");
       return;
     }
+
+    if (!passwordRegex.test(form.password)) {
+  setPasswordError(
+    "Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number, and one special character."
+  );
+  return;
+}
 
     try {
       setLoading(true);
@@ -166,6 +192,12 @@ const Register = () => {
             value={form.password}
             onChange={handleChange}
           />
+
+          {passwordError && (
+  <p className="password-error">
+    {passwordError}
+  </p>
+)}
 
         </div>
 

@@ -3,6 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { getCategories } from "../../api/categoryApi";
 import { uploadImage } from "../../api/uploadApi";
+import RichTextEditor from "../../components/RichTextEditor";
+
 
 const EditArticle = () => {
   const { id } = useParams();
@@ -242,12 +244,16 @@ const EditArticle = () => {
         <div className="mb-3">
           <label className="form-label">Content</label>
 
-          <textarea
+          {/* <textarea
             className="form-control"
             rows="10"
             value={content}
             onChange={(e) => setContent(e.target.value)}
-          />
+          /> */}
+          <RichTextEditor
+    value={content}
+    onChange={setContent}
+  />
         </div>
 
         {/* CATEGORY */}

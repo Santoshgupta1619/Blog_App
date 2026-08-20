@@ -252,3 +252,10 @@
 .verify-email-content .auth-submit {
   margin-top: 28px;
 }
+
+.password-error {
+  margin-top: 6px;
+  color: #d32f2f;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}

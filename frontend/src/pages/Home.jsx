@@ -3,6 +3,7 @@ import {
   getArticles,
   getCategories,
   getTrendingArticles,
+  getHomepageCategory,
 } from "../api/articleApi";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
@@ -19,6 +20,7 @@ const Home = () => {
 
   const [categories, setCategories] = useState(["All"]);
   const [trendingArticles, setTrendingArticles] = useState([]);
+  const [homepageCategory, setHomepageCategory] = useState(null);
 
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedTag, setSelectedTag] = useState(null);
@@ -30,6 +32,7 @@ const Home = () => {
   useEffect(() => {
     fetchCategories();
     fetchTrendingArticles();
+    fetchHomepageCategory();
   }, []);
 
   useEffect(() => {
@@ -42,7 +45,8 @@ const Home = () => {
 
       const res = await getArticles(
         page,
-        selectedCategory === "All" ? "" : selectedCategory,7
+        selectedCategory === "All" ? "" : selectedCategory,
+        7,
       );
 
       setArticles(res.data.data || []);
@@ -79,10 +83,17 @@ const Home = () => {
     }
   };
 
+  const fetchHomepageCategory = async () => {
+    try {
+      const res = await getHomepageCategory();
+      setHomepageCategory(res.data);
+    } catch (err) {
+      console.error("Error fetching homepage category:", err);
+    }
+  };
+
   const filteredArticles = selectedTag
-    ? articles.filter((article) =>
-        article.tags?.includes(selectedTag)
-      )
+    ? articles.filter((article) => article.tags?.includes(selectedTag))
     : articles;
 
   const featuredArticle = filteredArticles[0];
@@ -95,6 +106,26 @@ const Home = () => {
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
     setSelectedTag(null);
+  };
+
+  // =====================================================
+  // CATEGORY SECTION - VIEW ALL
+  // =====================================================
+
+  const handleViewAllCategory = () => {
+    if (!homepageCategory?.category) return;
+
+    setSelectedCategory(homepageCategory.category);
+    setSelectedTag(null);
+    setPage(1);
+
+    // Scroll back to the main article section
+    setTimeout(() => {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }, 50);
   };
 
   if (loading) {
@@ -113,7 +144,6 @@ const Home = () => {
   return (
     <div className="home">
       <div className="home-container">
-
         {/* =====================================================
             CATEGORY NAVIGATION
         ====================================================== */}
@@ -126,9 +156,7 @@ const Home = () => {
               {categories.map((category, index) => (
                 <button
                   key={`${category}-${index}`}
-                  className={
-                    selectedCategory === category ? "active" : ""
-                  }
+                  className={selectedCategory === category ? "active" : ""}
                   onClick={() => handleCategoryChange(category)}
                 >
                   {category}
@@ -145,17 +173,13 @@ const Home = () => {
         <section className="brand-intro">
           <div className="brand-rule"></div>
 
-          <p className="brand-eyebrow">
-            THE INDIAN GUIDE
-          </p>
+          <p className="brand-eyebrow">INDIA TECHNOLOGY GUIDE</p>
 
-          <h1>
-            Ideas. Technology. Innovation.
-          </h1>
+          <h1>Ideas. Technology. Innovation.</h1>
 
           <p className="brand-description">
-            Stories, ideas and insights shaping the world of
-            technology and beyond.
+            Stories, ideas and insights shaping the world of technology and
+            beyond.
           </p>
         </section>
 
@@ -166,14 +190,10 @@ const Home = () => {
         {selectedTag && (
           <div className="tag-filter">
             <span>
-              Showing articles tagged with{" "}
-              <strong>#{selectedTag}</strong>
+              Showing articles tagged with <strong>#{selectedTag}</strong>
             </span>
 
-            <button
-              className="clear-tag"
-              onClick={() => setSelectedTag(null)}
-            >
+            <button className="clear-tag" onClick={() => setSelectedTag(null)}>
               Clear ×
             </button>
           </div>
@@ -186,7 +206,6 @@ const Home = () => {
         {featuredArticle ? (
           <>
             <section className="editorial-section featured-section">
-
               <div className="section-heading">
                 <span>Featured</span>
                 <div></div>
@@ -208,26 +227,18 @@ const Home = () => {
                     </div>
                   )}
 
-                  <span className="featured-label">
-                    Featured
-                  </span>
+                  <span className="featured-label">Featured</span>
                 </div>
 
                 <div className="featured-editorial-content">
-
                   <div className="article-category">
-                    {featuredArticle.category ||
-                      "Technology"}
+                    {featuredArticle.category || "Technology"}
                   </div>
 
-                  <h2>
-                    {featuredArticle.title}
-                  </h2>
+                  <h2>{featuredArticle.title}</h2>
 
                   <p>
-                    {htmlToText(
-                      featuredArticle.content || ""
-                    ).slice(0, 240)}
+                    {htmlToText(featuredArticle.content || "").slice(0, 240)}
                     ...
                   </p>
 
@@ -235,19 +246,13 @@ const Home = () => {
                     <span>By Author</span>
                     <span>•</span>
                     <span>
-                      {dayjs(
-                        featuredArticle.created_at
-                      ).format("MMM D, YYYY")}
+                      {dayjs(featuredArticle.created_at).format("MMM D, YYYY")}
                     </span>
                   </div>
 
-                  <span className="read-story">
-                    Read story →
-                  </span>
-
+                  <span className="read-story">Read story →</span>
                 </div>
               </article>
-
             </section>
 
             {/* =====================================================
@@ -255,14 +260,12 @@ const Home = () => {
             ====================================================== */}
 
             <section className="editorial-section latest-section">
-
               <div className="section-heading">
                 <span>Latest Stories</span>
                 <div></div>
               </div>
 
               <div className="latest-grid">
-
                 {regularArticles.slice(0, 6).map((article) => (
                   <article
                     key={article.id}
@@ -271,10 +274,7 @@ const Home = () => {
                   >
                     <div className="latest-image">
                       {article.image_url ? (
-                        <img
-                          src={article.image_url}
-                          alt={article.title}
-                        />
+                        <img src={article.image_url} alt={article.title} />
                       ) : (
                         <div className="image-placeholder">
                           <span>THE INDIAN GUIDE</span>
@@ -283,35 +283,25 @@ const Home = () => {
                     </div>
 
                     <div className="latest-card-content">
-
                       <div className="article-category">
-                        {article.category ||
-                          "Technology"}
+                        {article.category || "Technology"}
                       </div>
 
-                      <h3>
-                        {article.title}
-                      </h3>
+                      <h3>{article.title}</h3>
 
                       <p>
-                        {htmlToText(
-                          article.content || ""
-                        ).slice(0, 100)}
+                        {htmlToText(article.content || "").slice(0, 100)}
                         ...
                       </p>
 
                       <div className="editorial-meta">
                         <span>
-                          {dayjs(
-                            article.created_at
-                          ).format("MMM D, YYYY")}
+                          {dayjs(article.created_at).format("MMM D, YYYY")}
                         </span>
                       </div>
-
                     </div>
                   </article>
                 ))}
-
               </div>
             </section>
 
@@ -321,54 +311,155 @@ const Home = () => {
 
             {trendingArticles.length > 0 && (
               <section className="editorial-section trending-editorial-section">
-
                 <div className="section-heading">
                   <span>Trending</span>
                   <div></div>
                 </div>
 
                 <div className="trending-editorial-grid">
+                  {trendingArticles.slice(0, 5).map((article, index) => (
+                    <article
+                      key={article.id}
+                      className="trending-editorial-item"
+                      onClick={() => openArticle(article.slug)}
+                    >
+                      <div className="trending-number">
+                        {String(index + 1).padStart(2, "0")}
+                      </div>
 
-                  {trendingArticles
-                    .slice(0, 5)
-                    .map((article, index) => (
-                      <article
-                        key={article.id}
-                        className="trending-editorial-item"
-                        onClick={() =>
-                          openArticle(article.slug)
-                        }
-                      >
-                        <div className="trending-number">
-                          {String(index + 1).padStart(2, "0")}
+                      <div className="trending-editorial-content">
+                        <div className="article-category">
+                          {article.category || "Technology"}
                         </div>
 
-                        <div className="trending-editorial-content">
+                        <h3>{article.title}</h3>
 
+                        <div className="editorial-meta">
+                          <span>
+                            {dayjs(article.created_at).format("MMM D")}
+                          </span>
+                        </div>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* =====================================================
+                CATEGORY FEATURE SECTION
+            ====================================================== */}
+
+            {selectedCategory === "All" &&
+              homepageCategory?.category &&
+              homepageCategory?.articles?.length > 0 && (
+                <section className="editorial-section homepage-category-section">
+                  {/* CATEGORY HEADER */}
+
+                  <div className="category-feature-heading">
+                    <div className="category-feature-title">
+                      {homepageCategory.category}
+                    </div>
+
+                    <button
+                      className="category-view-all"
+                      onClick={handleViewAllCategory}
+                    >
+                      View All →
+                    </button>
+                  </div>
+
+                  {/* CATEGORY ARTICLES */}
+
+                  <div className="category-feature-grid">
+                    {/* LARGE FEATURE ARTICLE */}
+
+                    {homepageCategory.articles[0] && (
+                      <article
+                        className="category-feature-main"
+                        onClick={() =>
+                          openArticle(homepageCategory.articles[0].slug)
+                        }
+                      >
+                        <div className="category-feature-main-image">
+                          {homepageCategory.articles[0].image_url ? (
+                            <img
+                              src={homepageCategory.articles[0].image_url}
+                              alt={homepageCategory.articles[0].title}
+                            />
+                          ) : (
+                            <div className="image-placeholder">
+                              <span>THE INDIAN GUIDE</span>
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="category-feature-main-content">
                           <div className="article-category">
-                            {article.category ||
-                              "Technology"}
+                            {homepageCategory.category}
                           </div>
 
-                          <h3>
-                            {article.title}
-                          </h3>
+                          <h2>{homepageCategory.articles[0].title}</h2>
+
+                          <p>
+                            {htmlToText(
+                              homepageCategory.articles[0].content || "",
+                            ).slice(0, 180)}
+                            ...
+                          </p>
 
                           <div className="editorial-meta">
                             <span>
                               {dayjs(
-                                article.created_at
-                              ).format("MMM D")}
+                                homepageCategory.articles[0].created_at,
+                              ).format("MMM D, YYYY")}
                             </span>
                           </div>
-
                         </div>
                       </article>
-                    ))}
+                    )}
 
-                </div>
-              </section>
-            )}
+                    {/* RIGHT SIDE ARTICLES */}
+
+                    <div className="category-feature-side">
+                      {homepageCategory.articles.slice(1, 4).map((article) => (
+                        <article
+                          key={article.id}
+                          className="category-feature-side-item"
+                          onClick={() => openArticle(article.slug)}
+                        >
+                          <div className="category-feature-side-image">
+                            {article.image_url ? (
+                              <img
+                                src={article.image_url}
+                                alt={article.title}
+                              />
+                            ) : (
+                              <div className="image-placeholder">
+                                <span>THE INDIAN GUIDE</span>
+                              </div>
+                            )}
+                          </div>
+
+                          <div className="category-feature-side-content">
+                            <div className="article-category">
+                              {homepageCategory.category}
+                            </div>
+
+                            <h3>{article.title}</h3>
+
+                            <div className="editorial-meta">
+                              <span>
+                                {dayjs(article.created_at).format("MMM D")}
+                              </span>
+                            </div>
+                          </div>
+                        </article>
+                      ))}
+                    </div>
+                  </div>
+                </section>
+              )}
 
             {/* =====================================================
                 CURRENT ARTICLE LIST
@@ -376,37 +467,27 @@ const Home = () => {
 
             {regularArticles.length > 6 && (
               <section className="editorial-section more-stories-section">
-
                 <div className="section-heading">
                   <span>More Stories</span>
                   <div></div>
                 </div>
 
                 <div className="more-stories">
-
                   {regularArticles.slice(6).map((article) => (
                     <article
                       key={article.id}
                       className="more-story"
-                      onClick={() =>
-                        openArticle(article.slug)
-                      }
+                      onClick={() => openArticle(article.slug)}
                     >
                       <div className="more-story-content">
-
                         <div className="article-category">
-                          {article.category ||
-                            "Technology"}
+                          {article.category || "Technology"}
                         </div>
 
-                        <h3>
-                          {article.title}
-                        </h3>
+                        <h3>{article.title}</h3>
 
                         <p>
-                          {htmlToText(
-                            article.content || ""
-                          ).slice(0, 130)}
+                          {htmlToText(article.content || "").slice(0, 130)}
                           ...
                         </p>
 
@@ -414,51 +495,37 @@ const Home = () => {
                           <span>By Author</span>
                           <span>•</span>
                           <span>
-                            {dayjs(
-                              article.created_at
-                            ).format("MMM D, YYYY")}
+                            {dayjs(article.created_at).format("MMM D, YYYY")}
                           </span>
                         </div>
 
                         {article.tags?.length > 0 && (
                           <div className="post-tags">
-
-                            {article.tags.map(
-                              (tag, index) => (
-                                <span
-                                  key={index}
-                                  className={`tag ${
-                                    selectedTag === tag
-                                      ? "active-tag"
-                                      : ""
-                                  }`}
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    setSelectedTag(tag);
-                                  }}
-                                >
-                                  #{tag}
-                                </span>
-                              )
-                            )}
-
+                            {article.tags.map((tag, index) => (
+                              <span
+                                key={index}
+                                className={`tag ${
+                                  selectedTag === tag ? "active-tag" : ""
+                                }`}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setSelectedTag(tag);
+                                }}
+                              >
+                                #{tag}
+                              </span>
+                            ))}
                           </div>
                         )}
-
                       </div>
 
                       {article.image_url && (
                         <div className="more-story-image">
-                          <img
-                            src={article.image_url}
-                            alt={article.title}
-                          />
+                          <img src={article.image_url} alt={article.title} />
                         </div>
                       )}
-
                     </article>
                   ))}
-
                 </div>
               </section>
             )}
@@ -468,12 +535,9 @@ const Home = () => {
             ====================================================== */}
 
             <div className="pagination">
-
               <button
                 disabled={page === 1}
-                onClick={() =>
-                  setPage((prev) => prev - 1)
-                }
+                onClick={() => setPage((prev) => prev - 1)}
               >
                 ← Previous
               </button>
@@ -484,26 +548,18 @@ const Home = () => {
 
               <button
                 disabled={page === totalPages}
-                onClick={() =>
-                  setPage((prev) => prev + 1)
-                }
+                onClick={() => setPage((prev) => prev + 1)}
               >
                 Next →
               </button>
-
             </div>
-
           </>
         ) : (
           <div className="no-articles">
             <h3>No articles found</h3>
-            <p>
-              There are no articles available in this
-              category.
-            </p>
+            <p>There are no articles available in this category.</p>
           </div>
         )}
-
       </div>
     </div>
   );

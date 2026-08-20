@@ -1,4 +1,11 @@
 import { useNavigate } from "react-router-dom";
+import {
+  UserRound,
+  LayoutDashboard,
+  PenLine,
+  LogOut,
+  LogIn,
+} from "lucide-react";
 import "./Navbar.css";
 import logo from "../assets/Nav_img.png";
 
@@ -54,7 +61,10 @@ const Navbar = () => {
                 className="nav-btn dashboard-btn"
                 onClick={() => navigate("/dashboard/profile")}
               >
-                <span className="nav-icon">👤</span>
+                <span className="nav-icon">
+                  <LayoutDashboard size={18} strokeWidth={2} />
+                </span>
+
                 <span className="btn-text">Dashboard</span>
               </button>
             )}
@@ -66,7 +76,10 @@ const Navbar = () => {
                   className="nav-btn dashboard-btn"
                   onClick={() => navigate("/admin/articles")}
                 >
-                  <span className="nav-icon">⚙️</span>
+                  <span className="nav-icon">
+                    <LayoutDashboard size={18} strokeWidth={2} />
+                  </span>
+
                   <span className="btn-text">Dashboard</span>
                 </button>
 
@@ -74,7 +87,10 @@ const Navbar = () => {
                   className="nav-btn write-btn"
                   onClick={() => navigate("/create")}
                 >
-                  <span className="nav-icon">✍️</span>
+                  <span className="nav-icon">
+                    <PenLine size={18} strokeWidth={2} />
+                  </span>
+
                   <span className="btn-text">Create Post</span>
                 </button>
               </>
@@ -85,7 +101,10 @@ const Navbar = () => {
               className="nav-btn logout-btn"
               onClick={handleLogout}
             >
-              <span className="nav-icon">↪</span>
+              <span className="nav-icon">
+                <LogOut size={18} strokeWidth={2} />
+              </span>
+
               <span className="btn-text">Logout</span>
             </button>
           </>
@@ -95,7 +114,10 @@ const Navbar = () => {
             className="nav-btn signin-btn"
             onClick={() => navigate("/login")}
           >
-            <span className="nav-icon">→</span>
+            <span className="nav-icon">
+              <LogIn size={18} strokeWidth={2} />
+            </span>
+
             <span className="btn-text">Sign In</span>
           </button>
         )}
