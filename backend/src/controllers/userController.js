@@ -28,7 +28,7 @@ export const getUserLikes = async (req, res) => {
 
     const result = await pool.query(
       `SELECT a.id, a.title, a.slug, a.created_at
-       FROM post_likes pl
+       FROM article_likes pl
        JOIN articles a ON a.id = pl.article_id
        WHERE pl.user_id = $1
        ORDER BY pl.created_at DESC`,

@@ -37,43 +37,52 @@ export const getCommentsByArticle = async (req, res) => {
 
     // 👉 get ONLY top-level comments
     const topLevel = await pool.query(
-      `SELECT c.*,
-              COUNT(cl.id) AS like_count,
-              EXISTS (
-                SELECT 1 FROM comment_likes
-                WHERE comment_id = c.id AND user_id = $4
-              ) AS is_liked
-       FROM comments c
-       LEFT JOIN comment_likes cl
-       ON c.id = cl.comment_id
-       WHERE c.article_id = $1
-AND c.parent_id IS NULL
-AND c.id NOT IN (
-  SELECT comment_id FROM comment_reports
-  GROUP BY comment_id
-  HAVING COUNT(*) >= 3
-)
-       GROUP BY c.id
-       ORDER BY c.created_at DESC
-       LIMIT $2 OFFSET $3`,
-      [articleId, limit, offset, req.user?.id || null]
-    );
+  `SELECT c.*,
+          u.name AS user_name,
+          COUNT(cl.id) AS like_count,
+          EXISTS (
+            SELECT 1
+            FROM comment_likes
+            WHERE comment_id = c.id
+              AND user_id = $4
+          ) AS is_liked
+   FROM comments c
+   JOIN users u
+     ON u.id = c.author_id
+   LEFT JOIN comment_likes cl
+     ON c.id = cl.comment_id
+   WHERE c.article_id = $1
+     AND c.parent_id IS NULL
+     AND c.id NOT IN (
+       SELECT comment_id
+       FROM comment_reports
+       GROUP BY comment_id
+       HAVING COUNT(*) >= 3
+     )
+   GROUP BY c.id, u.name
+   ORDER BY c.created_at DESC
+   LIMIT $2 OFFSET $3`,
+  [articleId, limit, offset, req.user?.id || null]
+);
 
     const parentComments = topLevel.rows;
 
     // 👉 get ALL replies for those comments
     const replies = await pool.query(
-      `SELECT c.*,
-              COUNT(cl.id) AS like_count
-       FROM comments c
-       LEFT JOIN comment_likes cl
-       ON c.id = cl.comment_id
-       WHERE c.article_id = $1
-       AND c.parent_id IS NOT NULL
-       GROUP BY c.id
-       ORDER BY c.created_at ASC`,
-      [articleId]
-    );
+  `SELECT c.*,
+          u.name AS user_name,
+          COUNT(cl.id) AS like_count
+   FROM comments c
+   JOIN users u
+     ON u.id = c.author_id
+   LEFT JOIN comment_likes cl
+     ON c.id = cl.comment_id
+   WHERE c.article_id = $1
+     AND c.parent_id IS NOT NULL
+   GROUP BY c.id, u.name
+   ORDER BY c.created_at ASC`,
+  [articleId]
+);
 
     const allComments = [...parentComments, ...replies.rows];
 

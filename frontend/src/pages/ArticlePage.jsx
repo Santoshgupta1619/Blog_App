@@ -1,6 +1,19 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import "./ArticlePage.css";
+
+import {
+  FaFacebookF,
+  FaWhatsapp,
+  FaTelegramPlane,
+  FaLinkedinIn,
+  FaInstagram,
+  FaEnvelope,
+  FaLink,
+} from "react-icons/fa";
+
+import { FaXTwitter } from "react-icons/fa6";
+import { Share2 } from "lucide-react";
 
 import { getArticleBySlug, togglePostLike, toggleBookmark } from "../api/articleApi";
 import {
@@ -20,6 +33,10 @@ const ArticlePage = () => {
   const [newComment, setNewComment] = useState("");
   const [editingId, setEditingId] = useState(null);
   const [editText, setEditText] = useState("");
+
+  const [showShare, setShowShare] = useState(false);
+  const [linkCopied, setLinkCopied] = useState(false);
+  const shareRef = useRef(null);
 
   // ✅ USER ID FROM TOKEN
   let userId = null;
@@ -51,6 +68,23 @@ const ArticlePage = () => {
   useEffect(() => {
     fetchData();
   }, [slug]);
+
+  useEffect(() => {
+  const handleClickOutside = (event) => {
+    if (
+      shareRef.current &&
+      !shareRef.current.contains(event.target)
+    ) {
+      setShowShare(false);
+    }
+  };
+
+  document.addEventListener("mousedown", handleClickOutside);
+
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
+}, []);
 
   // ✅ ADD COMMENT
   const handleAddComment = async () => {
@@ -134,6 +168,88 @@ const handleBookmark = async () => {
   }
 };
 
+const articleUrl = window.location.href;
+
+const handleShare = (platform) => {
+  if (!article) return;
+
+  const title = article.title;
+  const url = articleUrl;
+
+  const encodedUrl = encodeURIComponent(url);
+  const encodedTitle = encodeURIComponent(title);
+
+  let shareUrl = "";
+
+  switch (platform) {
+    case "facebook":
+      shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
+      break;
+
+    case "whatsapp":
+      shareUrl = `https://wa.me/?text=${encodedTitle}%20${encodedUrl}`;
+      break;
+
+    case "telegram":
+      shareUrl = `https://t.me/share/url?url=${encodedUrl}&text=${encodedTitle}`;
+      break;
+
+    case "x":
+      shareUrl = `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`;
+      break;
+
+    case "linkedin":
+      shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`;
+      break;
+
+    case "instagram":
+      navigator.clipboard.writeText(url);
+
+      window.open(
+        "https://www.instagram.com/",
+        "_blank",
+        "noopener,noreferrer"
+      );
+
+      setLinkCopied(true);
+
+      setTimeout(() => {
+        setLinkCopied(false);
+      }, 2000);
+
+      return;
+
+    case "email":
+      shareUrl = `mailto:?subject=${encodedTitle}&body=${encodeURIComponent(
+        `Check out this article:\n\n${title}\n\n${url}`
+      )}`;
+      break;
+
+    default:
+      return;
+  }
+
+  window.open(
+    shareUrl,
+    "_blank",
+    "noopener,noreferrer,width=700,height=600"
+  );
+};
+
+const handleCopyLink = async () => {
+  try {
+    await navigator.clipboard.writeText(articleUrl);
+
+    setLinkCopied(true);
+
+    setTimeout(() => {
+      setLinkCopied(false);
+    }, 2000);
+  } catch (err) {
+    console.error("Failed to copy link:", err);
+  }
+};
+
 
   if (!article) return <p className="loading">Loading...</p>;
 
@@ -172,13 +288,129 @@ const handleBookmark = async () => {
   }}
 />
 
-        <button onClick={handlePostLike}>
-  {article.is_liked ? "❤️" : "🤍"} {article.like_count || 0}
-</button>
+    <div className="article-actions">
+  {/* LIKE */}
+  <button
+    className="article-action-btn"
+    onClick={handlePostLike}
+  >
+    {article.is_liked ? "❤️" : "🤍"}
+    <span>{article.like_count || 0}</span>
+  </button>
 
-<button onClick={handleBookmark}>
-  {article.is_bookmarked ? "🔖 Saved" : "📑 Save"}
-</button>
+  {/* BOOKMARK */}
+  <button
+    className="article-action-btn"
+    onClick={handleBookmark}
+  >
+    <span>{article.is_bookmarked ? "🔖" : "📑"}</span>
+    <span>{article.is_bookmarked ? "Saved" : "Save"}</span>
+  </button>
+
+  {/* SHARE */}
+  <div className="share-wrapper" ref={shareRef}>
+    <button
+      className="article-action-btn share-trigger"
+      onClick={() => setShowShare((prev) => !prev)}
+      aria-expanded={showShare}
+      aria-label="Share article"
+    >
+      <Share2 size={17} strokeWidth={2} />
+      <span>Share</span>
+    </button>
+
+    {/* SHARE OPTIONS */}
+    {showShare && (
+      <div className="share-menu">
+        <div className="share-menu-title">
+          Share this article
+        </div>
+
+        <div className="share-options">
+
+          {/* FACEBOOK */}
+          <button
+            className="share-option facebook"
+            onClick={() => handleShare("facebook")}
+            title="Share on Facebook"
+          >
+            <FaFacebookF />
+          </button>
+
+          {/* WHATSAPP */}
+          <button
+            className="share-option whatsapp"
+            onClick={() => handleShare("whatsapp")}
+            title="Share on WhatsApp"
+          >
+            <FaWhatsapp />
+          </button>
+
+          {/* TELEGRAM */}
+          <button
+            className="share-option telegram"
+            onClick={() => handleShare("telegram")}
+            title="Share on Telegram"
+          >
+            <FaTelegramPlane />
+          </button>
+
+          {/* X */}
+          <button
+            className="share-option x-twitter"
+            onClick={() => handleShare("x")}
+            title="Share on X"
+          >
+            <FaXTwitter />
+          </button>
+
+          {/* LINKEDIN */}
+          <button
+            className="share-option linkedin"
+            onClick={() => handleShare("linkedin")}
+            title="Share on LinkedIn"
+          >
+            <FaLinkedinIn />
+          </button>
+
+          {/* INSTAGRAM */}
+          <button
+            className="share-option instagram"
+            onClick={() => handleShare("instagram")}
+            title="Share on Instagram"
+          >
+            <FaInstagram />
+          </button>
+
+          {/* EMAIL */}
+          <button
+            className="share-option email"
+            onClick={() => handleShare("email")}
+            title="Share by Email"
+          >
+            <FaEnvelope />
+          </button>
+
+          {/* COPY LINK */}
+          <button
+            className="share-option copy-link"
+            onClick={handleCopyLink}
+            title="Copy article link"
+          >
+            <FaLink />
+          </button>
+
+        </div>
+
+        {linkCopied && (
+          <div className="link-copied">
+            ✓ Link copied
+          </div>
+        )}
+      </div>
+    )}
+  </div>
+</div>
 
         {/* COMMENTS */}
         <div className="responses-heading">

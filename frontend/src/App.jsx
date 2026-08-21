@@ -23,14 +23,18 @@ import ForgotPassword from "./pages/ForgotPassword";
 import VerifyOTP from "./pages/VerifyOTP";
 import ResetPassword from "./pages/ResetPassword";
 import VerifyEmail from "./pages/VerifyEmail";
+import About from "./pages/About";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   return (
     <BrowserRouter>
+    <ScrollToTop />
       <Navbar />
 
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
         <Route path="/article/:slug" element={<ArticlePage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />

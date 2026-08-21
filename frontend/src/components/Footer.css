@@ -1,15 +1,109 @@
-.footer { margin-top: auto; border-top: 1px solid #dfe7df; background: #1d402d; color: #dbe9dc; }
-.footer-container { width: min(100% - 64px, 1136px); margin: 0 auto; padding: 46px 0 22px; }
-.footer-main { display: flex; align-items: end; justify-content: space-between; gap: 32px; padding-bottom: 36px; }
-.footer-brand { max-width: 500px; }
-.footer-title { margin: 0; color: #fff; font-family: Georgia, 'Times New Roman', serif; font-size: clamp(1.35rem, 3vw, 1.7rem); font-weight: 600; letter-spacing: -.03em; line-height: 1.12; }
-.footer-nav { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 20px; }
-.footer-nav a { color: #d5e5d7; text-decoration: none; font-size: .8rem; font-weight: 700; transition: color .2s ease; }
-.footer-nav a:hover { color: #fff; }
-.footer-nav a:focus-visible, .footer-social a:focus-visible { outline: 2px solid #bbdbbf; outline-offset: 4px; border-radius: 3px; }
-.footer-bottom { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding-top: 20px; border-top: 1px solid rgba(214, 233, 216, .18); }
-.footer-copy { margin: 0; color: #abc3af; font-size: .72rem; }
-.footer-social { display: flex; gap: 9px; }
-.footer-social a { display: grid; width: 33px; height: 33px; place-items: center; border: 1px solid rgba(214, 233, 216, .25); border-radius: 50%; color: #e3eee4; font-size: .86rem; text-decoration: none; transition: background .2s ease, border-color .2s ease, transform .2s ease; }
-.footer-social a:hover { border-color: #dceede; background: #edf5ee; color: #214d35; transform: translateY(-2px); }
-@media (max-width: 600px) { .footer-container { width: min(100% - 30px, 1136px); padding: 35px 0 18px; } .footer-main { display: block; padding-bottom: 28px; } .footer-nav { justify-content: flex-start; margin-top: 26px; } .footer-bottom { align-items: flex-start; flex-direction: column-reverse; gap: 15px; } }
+.footer {
+  margin-top: auto;
+  border-top: 1px solid #dfe7df;
+  background: #1d402d;
+  color: #dbe9dc;
+}
+.footer-container {
+  width: min(100% - 64px, 1136px);
+  margin: 0 auto;
+  padding: 46px 0 22px;
+}
+.footer-main {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 32px;
+  padding-bottom: 36px;
+}
+.footer-brand {
+  max-width: 500px;
+}
+.footer-title {
+  margin: 0;
+  color: #fff;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.35rem, 3vw, 1.7rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.12;
+}
+.footer-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 20px;
+}
+.footer-nav a {
+  color: #d5e5d7;
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 700;
+  transition: color 0.2s ease;
+}
+.footer-nav a:hover {
+  color: #fff;
+}
+.footer-nav a:focus-visible,
+.footer-social a:focus-visible {
+  outline: 2px solid #bbdbbf;
+  outline-offset: 4px;
+  border-radius: 3px;
+}
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(214, 233, 216, 0.18);
+}
+.footer-copy {
+  margin: 0;
+  color: #abc3af;
+  font-size: 0.72rem;
+}
+.footer-social {
+  display: flex;
+  gap: 9px;
+}
+.footer-social a {
+  display: grid;
+  width: 33px;
+  height: 33px;
+  place-items: center;
+  border: 1px solid rgba(214, 233, 216, 0.25);
+  border-radius: 50%;
+  color: #e3eee4;
+  font-size: 0.86rem;
+  text-decoration: none;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+.footer-social a:hover {
+  border-color: #dceede;
+  background: #edf5ee;
+  color: #214d35;
+  transform: translateY(-2px);
+}
+@media (max-width: 600px) {
+  .footer-container {
+    width: min(100% - 30px, 1136px);
+    padding: 35px 0 18px;
+  }
+  .footer-main {
+    display: block;
+    padding-bottom: 28px;
+  }
+  .footer-nav {
+    justify-content: flex-start;
+    margin-top: 26px;
+  }
+  .footer-bottom {
+    align-items: flex-start;
+    flex-direction: column-reverse;
+    gap: 15px;
+  }
+}
