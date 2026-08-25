@@ -39,3 +39,6 @@ export const toggleBookmark = (articleId) =>
 
 export const getAdminBookmarks = () =>
   API.get("/admin/bookmarks");
+
+export const getRecommendedArticles = (articleId) =>
+  API.get(`/articles/recommended/${articleId}`);

@@ -558,15 +558,22 @@ export const getScheduledArticles = async (req, res) => {
   }
 };
 
-// 🔹 GET ALL ARTICLES (ADMIN)
+// GET ALL ARTICLES (ADMIN)
 export const getAllArticles = async (req, res) => {
   try {
-    const result = await pool.query(
-      `SELECT * FROM articles ORDER BY created_at DESC`
-    );
+    const result = await pool.query(`
+      SELECT
+        a.*,
+        c.name AS category
+      FROM articles a
+      LEFT JOIN categories c
+        ON a.category_id = c.id
+      ORDER BY a.created_at DESC
+    `);
 
     res.json(result.rows);
   } catch (err) {
+    console.error("GET ALL ARTICLES ERROR:", err);
     res.status(500).json({ error: err.message });
   }
 };
@@ -664,12 +671,13 @@ export const getAdminBookmarks = async (req, res) => {
 };
 
 // ======================================================
-// HOMEPAGE FEATURED CATEGORY
+// HOMEPAGE CATEGORY CAROUSEL
 // ======================================================
 
 export const getHomepageCategory = async (req, res) => {
   try {
-    // Find the category with the most published articles
+    // Get all categories that have published articles
+    // Ordered by number of published articles
     const categoryResult = await pool.query(`
       SELECT
         c.id,
@@ -681,25 +689,72 @@ export const getHomepageCategory = async (req, res) => {
       WHERE a.status = 'published'
       GROUP BY c.id
       ORDER BY COUNT(a.id) DESC, c.name ASC
-      LIMIT 1
     `);
 
     if (categoryResult.rows.length === 0) {
-      return res.json({
-        category: null,
-        articles: [],
-      });
+      return res.json([]);
     }
 
-    const category = categoryResult.rows[0];
+    // Get latest 4 articles for every category
+    const categories = await Promise.all(
+      categoryResult.rows.map(async (category) => {
+        const articlesResult = await pool.query(
+          `
+          SELECT
+            a.id,
+            a.title,
+            a.slug,
+            a.content,
+            a.image_url,
+            a.created_at,
+            c.name AS category
 
-    const articlesResult = await pool.query(
+          FROM articles a
+
+          JOIN categories c
+            ON c.id = a.category_id
+
+          WHERE
+            a.status = 'published'
+            AND a.category_id = $1
+
+          ORDER BY a.created_at DESC
+
+          LIMIT 4
+          `,
+          [category.id]
+        );
+
+        return {
+          category: category.name,
+          categoryId: category.id,
+          totalArticles: Number(category.total_articles),
+          articles: articlesResult.rows,
+        };
+      })
+    );
+
+    res.json(categories);
+
+  } catch (err) {
+    console.error("GET HOMEPAGE CATEGORIES ERROR:", err);
+
+    res.status(500).json({
+      error: err.message,
+    });
+  }
+};
+
+export const getRecommendedArticles = async (req, res) => {
+  try {
+    const { articleId } = req.params;
+
+    const result = await pool.query(
       `
       SELECT
         a.id,
         a.title,
         a.slug,
-        a.content,
         a.image_url,
         a.created_at,
         c.name AS category
@@ -710,23 +765,20 @@ export const getHomepageCategory = async (req, res) => {
         ON c.id = a.category_id
 
       WHERE
-        a.status = 'published'
-        AND c.id = $1
+        a.id <> $1
+        AND a.status = 'published'
 
       ORDER BY a.created_at DESC
 
-      LIMIT 4
+      LIMIT 10
       `,
-      [category.id]
+      [articleId]
     );
 
-    res.json({
-      category: category.name,
-      articles: articlesResult.rows,
-    });
+    res.json(result.rows);
 
   } catch (err) {
-    console.error("GET HOMEPAGE CATEGORY ERROR:", err);
+    console.error(err);
 
     res.status(500).json({
       error: err.message,

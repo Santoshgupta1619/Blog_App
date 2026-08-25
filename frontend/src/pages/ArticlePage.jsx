@@ -15,7 +15,7 @@ import {
 import { FaXTwitter } from "react-icons/fa6";
 import { Share2 } from "lucide-react";
 
-import { getArticleBySlug, togglePostLike, toggleBookmark } from "../api/articleApi";
+import { getArticleBySlug, togglePostLike, toggleBookmark,getRecommendedArticles } from "../api/articleApi";
 import {
   getComments,
   addComment,
@@ -30,9 +30,14 @@ const ArticlePage = () => {
 
   const [article, setArticle] = useState(null);
   const [comments, setComments] = useState([]);
-  const [newComment, setNewComment] = useState("");
+const [newComment, setNewComment] = useState("");
+
+const [commentPage, setCommentPage] = useState(1);
+const [commentTotalPages, setCommentTotalPages] = useState(1);
+const [loadingComments, setLoadingComments] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [editText, setEditText] = useState("");
+  const [recommended, setRecommended] = useState([]);
 
   const [showShare, setShowShare] = useState(false);
   const [linkCopied, setLinkCopied] = useState(false);
@@ -53,17 +58,67 @@ const ArticlePage = () => {
   }
 
   // ✅ FETCH DATA
-  const fetchData = async () => {
-    try {
-      const res = await getArticleBySlug(slug);;
-      setArticle(res.data);
+const fetchData = async () => {
+  try {
+    const res = await getArticleBySlug(slug);
 
-      const commentsRes = await getComments(res.data.id);
-      setComments(commentsRes.data.data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+    setArticle(res.data);
+
+    // Get first page of comments
+    const commentsRes = await getComments(
+      res.data.id,
+      1,
+      5
+    );
+
+    setComments(commentsRes.data.data);
+
+    setCommentPage(1);
+    setCommentTotalPages(commentsRes.data.totalPages);
+
+    // Get recommended articles
+    const recommendedRes = await getRecommendedArticles(
+      res.data.id
+    );
+
+    setRecommended(recommendedRes.data);
+
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const handleLoadMoreComments = async () => {
+  if (loadingComments) return;
+
+  if (commentPage >= commentTotalPages) return;
+
+  try {
+    setLoadingComments(true);
+
+    const nextPage = commentPage + 1;
+
+    const res = await getComments(
+      article.id,
+      nextPage,
+      5
+    );
+
+    setComments((prev) => [
+      ...prev,
+      ...res.data.data,
+    ]);
+
+    setCommentPage(nextPage);
+    setCommentTotalPages(res.data.totalPages);
+
+  } catch (err) {
+    console.error("Failed to load more comments:", err);
+
+  } finally {
+    setLoadingComments(false);
+  }
+};
 
   useEffect(() => {
     fetchData();
@@ -412,6 +467,55 @@ const handleCopyLink = async () => {
   </div>
 </div>
 
+        {/* =======================
+            RECOMMENDED ARTICLES
+        ======================= */}
+
+        {recommended.length > 0 && (
+          <section className="recommended-section">
+
+            <h2 className="recommended-title">
+              Recommended Articles
+            </h2>
+
+            <div className="recommended-slider">
+
+              {recommended.map((item) => (
+                <a
+                  key={item.id}
+                  href={`/article/${item.slug}`}
+                  className="recommended-card"
+                >
+                  <img
+                    src={
+                      item.image_url ||
+                      "https://source.unsplash.com/400x250/?technology"
+                    }
+                    alt={item.title}
+                  />
+
+                  <div className="recommended-content">
+
+                    <span className="recommended-category">
+                      {item.category}
+                    </span>
+
+                    <h3>{item.title}</h3>
+
+                    <small>
+                      {new Date(item.created_at).toDateString()}
+                    </small>
+
+                  </div>
+                </a>
+              ))}
+
+            </div>
+
+          </section>
+        )}
+
+
         {/* COMMENTS */}
         <div className="responses-heading">
           <h2 className="comment-header">Responses</h2>
@@ -437,6 +541,7 @@ const handleCopyLink = async () => {
   </p>
 )}
 
+                
         {/* COMMENT LIST */}
         {comments.map((c) => (
           <CommentCard
@@ -451,12 +556,29 @@ const handleCopyLink = async () => {
             handleEdit={handleEdit}
             handleUpdate={handleUpdate}
             handleDelete={handleDelete}
-            handleLike={handleLike} 
+            handleLike={handleLike}
             handleBookmark={handleBookmark}
           />
         ))}
-      </div>
+
+        {commentPage < commentTotalPages && (
+  <div className="load-more-comments-wrapper">
+    <button
+      className="load-more-comments-btn"
+      onClick={handleLoadMoreComments}
+      disabled={loadingComments}
+    >
+      {loadingComments
+        ? "Loading..."
+        : "Load More Comments"}
+    </button>
+  </div>
+)}
+
+      </div> 
+
     </div>
+    
   );
 };
 

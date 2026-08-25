@@ -14,19 +14,53 @@ const CustomImage = Image.extend({
       align: {
         default: "center",
       },
+
+      // NEW: URL attached to the image
+      link: {
+        default: null,
+      },
     };
   },
 
   renderHTML({ HTMLAttributes }) {
-  return [
-    "img",
-    mergeAttributes(HTMLAttributes, {
-      width: HTMLAttributes.width,
-      "data-align": HTMLAttributes.align,
-      align: HTMLAttributes.align,
-    }),
-  ];
-},
+    const {
+      src,
+      alt,
+      title,
+      width,
+      align,
+      link,
+      ...rest
+    } = HTMLAttributes;
+
+    const imageHTML = [
+      "img",
+      mergeAttributes(rest, {
+        src,
+        alt,
+        title,
+        width,
+        "data-align": align,
+        align,
+      }),
+    ];
+
+    // If image has a link, wrap it inside <a>
+    if (link) {
+      return [
+        "a",
+        {
+          href: link,
+          target: "_blank",
+          rel: "noopener noreferrer",
+        },
+        imageHTML,
+      ];
+    }
+
+    // Normal image without a link
+    return imageHTML;
+  },
 
   addNodeView() {
     return ReactNodeViewRenderer(ResizableImage);

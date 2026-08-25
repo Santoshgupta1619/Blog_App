@@ -6,6 +6,19 @@ import "./CreateArticle.css";
 import { getCategories } from "../api/categoryApi";
 import RichTextEditor from "../components/RichTextEditor";
 
+
+const getLocalDateTimeString = () => {
+  const now = new Date();
+
+  const offset = now.getTimezoneOffset();
+
+  const localDate = new Date(
+    now.getTime() - offset * 60 * 1000
+  );
+
+  return localDate.toISOString().slice(0, 16);
+};
+
 const CreateArticle = () => {
   const navigate = useNavigate();
 
@@ -40,19 +53,47 @@ const CreateArticle = () => {
     }
   };
 
-  const handleAddTag = (e) => {
-    if (e.key === "Enter" && tagInput.trim() !== "") {
-      e.preventDefault();
+  const addTags = (value) => {
+  const newTags = value
+    .split(/[,;\n|]+/)
+    .map((tag) => tag.trim())
+    .filter((tag) => tag !== "");
 
-      const newTag = tagInput.trim();
+  if (newTags.length === 0) return;
 
-      if (!tags.includes(newTag)) {
-        setTags([...tags, newTag]);
+  setTags((prevTags) => {
+    const updatedTags = [...prevTags];
+
+    newTags.forEach((tag) => {
+      if (!updatedTags.includes(tag)) {
+        updatedTags.push(tag);
       }
+    });
 
-      setTagInput("");
-    }
-  };
+    return updatedTags;
+  });
+};
+
+const handleAddTag = (e) => {
+  if (e.key === "Enter" && tagInput.trim() !== "") {
+    e.preventDefault();
+
+    addTags(tagInput);
+    setTagInput("");
+  }
+};
+
+const handleTagPaste = (e) => {
+  const pastedText = e.clipboardData.getData("text");
+
+  // Only handle paste specially when multiple tags are detected
+  if (/[,;\n|]/.test(pastedText)) {
+    e.preventDefault();
+
+    addTags(pastedText);
+    setTagInput("");
+  }
+};
 
   const removeTag = (tagToRemove) => {
     setTags(tags.filter((tag) => tag !== tagToRemove));
@@ -126,7 +167,10 @@ const CreateArticle = () => {
         category: category.trim(),
         tags,
         status,
-        scheduled_at: status === "scheduled" ? scheduledAt : null,
+        scheduled_at:
+    status === "scheduled"
+      ? new Date(scheduledAt).toISOString()
+      : null,
       });
 
       if (status === "draft") {
@@ -254,13 +298,14 @@ const CreateArticle = () => {
 
           {/* TAG INPUT */}
           <input
-            type="text"
-            className="form-control"
-            placeholder="Type a tag and press Enter"
-            value={tagInput}
-            onChange={(e) => setTagInput(e.target.value)}
-            onKeyDown={handleAddTag}
-          />
+  type="text"
+  className="form-control"
+  placeholder="Type a tag and press Enter"
+  value={tagInput}
+  onChange={(e) => setTagInput(e.target.value)}
+  onKeyDown={handleAddTag}
+  onPaste={handleTagPaste}
+/>
         </div>
 
         <div className="mb-3">
@@ -287,7 +332,7 @@ const CreateArticle = () => {
               type="datetime-local"
               className="form-control"
               value={scheduledAt}
-              min={new Date().toISOString().slice(0, 16)}
+              min={getLocalDateTimeString()}
               onChange={(e) => setScheduledAt(e.target.value)}
             />
 

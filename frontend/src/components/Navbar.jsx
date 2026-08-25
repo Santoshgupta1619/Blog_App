@@ -1,16 +1,17 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
-  UserRound,
   LayoutDashboard,
   PenLine,
   LogOut,
   LogIn,
+  House,
 } from "lucide-react";
 import "./Navbar.css";
 import logo from "../assets/Nav_img.png";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const token = localStorage.getItem("token");
 
@@ -110,16 +111,32 @@ const Navbar = () => {
           </>
         ) : (
           /* GUEST */
-          <button
-            className="nav-btn signin-btn"
-            onClick={() => navigate("/login")}
-          >
-            <span className="nav-icon">
-              <LogIn size={18} strokeWidth={2} />
-            </span>
+          <>
+  {location.pathname !== "/" && (
+    <button
+      className="nav-btn home-btn"
+      onClick={() => navigate("/")}
+      title="Home"
+    >
+      <span className="nav-icon">
+        <House size={18} strokeWidth={2} />
+      </span>
 
-            <span className="btn-text">Sign In</span>
-          </button>
+      <span className="btn-text">Home</span>
+    </button>
+  )}
+
+  <button
+    className="nav-btn signin-btn"
+    onClick={() => navigate("/login")}
+  >
+    <span className="nav-icon">
+      <LogIn size={18} strokeWidth={2} />
+    </span>
+
+    <span className="btn-text">Sign In</span>
+  </button>
+</>
         )}
       </div>
     </header>

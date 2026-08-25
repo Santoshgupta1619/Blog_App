@@ -5,7 +5,8 @@ import {
   getArticleBySlug,
   getCategories,
   getTrendingArticles,
-  getHomepageCategory 
+  getHomepageCategory,
+  getRecommendedArticles 
 } from "../controllers/articleController.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 import { updateArticle,toggleLikePost, toggleBookmark } from "../controllers/articleController.js";
@@ -27,6 +28,7 @@ router.get("/home-category", getHomepageCategory);
 
 router.get("/", getPublishedArticles);
 
+router.get("/recommended/:articleId", getRecommendedArticles);
 // GET BY SLUG (public)
 router.get("/:slug", optionalAuthMiddleware,getArticleBySlug);
 

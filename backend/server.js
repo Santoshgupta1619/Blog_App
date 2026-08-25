@@ -1,15 +1,14 @@
+
 import "dotenv/config";
 import app from "./src/app.js";
-
 import publishScheduledArticles from "./src/services/scheduler.js";
 
-// dotenv.config();
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+const server = app.listen(PORT, () => {
+  console.log(`✅ Server running on port ${PORT}`);
 
-  // Check immediately when server starts
+  // Run once when server starts
   publishScheduledArticles();
 
   // Check every 30 seconds
@@ -17,3 +16,8 @@ app.listen(PORT, () => {
     publishScheduledArticles();
   }, 30 * 1000);
 });
+
+server.on("error", (err) => {
+  console.error("Server failed to start:", err);
+});
+

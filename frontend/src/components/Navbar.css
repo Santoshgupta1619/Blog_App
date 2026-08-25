@@ -150,6 +150,7 @@
   .btn-text {
     display: none;
   }
+  
 }
 @media (max-width: 380px) {
   .navbar {
@@ -163,4 +164,15 @@
     width: 35px;
     min-height: 35px;
   }
+}
+
+.home-btn {
+  border-color: #dfe5e1;
+  background: #ffffff;
+  color: #315b43;
+}
+
+.home-btn:hover {
+  border-color: #c8d2cb;
+  background: #f6f8f6;
 }

@@ -1,6 +1,18 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { htmlToText } from "../../utils/htmlToText";
+
+
+
+const formatScheduledDate = (date) => {
+  return new Date(date).toLocaleString("en-IN", {
+    timeZone: "Asia/Kolkata",
+    dateStyle: "medium",
+    timeStyle: "short",
+  });
+};
+
 
 const Scheduled = () => {
   const [scheduledArticles, setScheduledArticles] = useState([]);
@@ -161,14 +173,18 @@ const Scheduled = () => {
                     {article.title}
                   </h5>
 
-                  {/* CONTENT */}
-                  <p className="card-text text-muted">
-                    {article.content
-                      ? article.content.length > 100
-                        ? article.content.substring(0, 100) + "..."
-                        : article.content
-                      : "No content"}
-                  </p>
+                 {/* CONTENT */}
+<p className="card-text text-muted">
+  {article.content
+    ? (() => {
+        const text = htmlToText(article.content).trim();
+
+        return text.length > 120
+          ? text.substring(0, 120) + "..."
+          : text;
+      })()
+    : "No content"}
+</p>
 
                   {/* CATEGORY */}
                   {article.category && (
@@ -187,9 +203,7 @@ const Scheduled = () => {
                       </small>
 
                       <div className="fw-semibold">
-                        {new Date(
-                          article.scheduled_at
-                        ).toLocaleString()}
+                        {formatScheduledDate(article.scheduled_at)}
                       </div>
                     </div>
                   )}

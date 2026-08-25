@@ -5,6 +5,7 @@ import {
   deleteCategory,
 } from "../../api/categoryApi";
 
+
 const Categories = () => {
   const [categories, setCategories] = useState([]);
   const [name, setName] = useState("");

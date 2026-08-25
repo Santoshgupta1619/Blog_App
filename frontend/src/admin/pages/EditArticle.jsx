@@ -5,6 +5,17 @@ import { getCategories } from "../../api/categoryApi";
 import { uploadImage } from "../../api/uploadApi";
 import RichTextEditor from "../../components/RichTextEditor";
 
+const formatForDateTimeLocal = (dateString) => {
+  const date = new Date(dateString);
+
+  const offset = date.getTimezoneOffset();
+
+  const localDate = new Date(
+    date.getTime() - offset * 60 * 1000
+  );
+
+  return localDate.toISOString().slice(0, 16);
+};
 
 const EditArticle = () => {
   const { id } = useParams();
@@ -60,16 +71,10 @@ const EditArticle = () => {
         setStatus(article.status || "published");
 
         if (article.scheduled_at) {
-          const date = new Date(article.scheduled_at);
-
-          const formattedDate = new Date(
-            date.getTime() - date.getTimezoneOffset() * 60000,
-          )
-            .toISOString()
-            .slice(0, 16);
-
-          setScheduledAt(formattedDate);
-        }
+  setScheduledAt(
+    formatForDateTimeLocal(article.scheduled_at)
+  );
+}
 
         setTags(article.tags || []);
       } catch (err) {
@@ -163,7 +168,10 @@ const EditArticle = () => {
           category,
           tags,
           status,
-          scheduled_at: status === "scheduled" ? scheduledAt : null,
+          scheduled_at:
+    status === "scheduled"
+      ? new Date(scheduledAt).toISOString()
+      : null,
         },
         {
           headers: {
@@ -196,6 +204,18 @@ const EditArticle = () => {
     <div className="container mt-5">
       <div className="card p-4 shadow">
         <h3 className="mb-4">Edit Article</h3>
+
+        <div className="mb-3">
+          <label className="form-label">Title</label>
+
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Enter article title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+        </div>
 
         {/* FEATURED IMAGE */}
 <div className="mb-3">

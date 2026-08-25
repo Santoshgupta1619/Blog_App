@@ -1,7 +1,12 @@
 import API from "./axios";
 
-export const getComments = (articleId) => {
-  return API.get(`/comments/${articleId}`);
+export const getComments = (articleId, page = 1, limit = 5) => {
+  return API.get(`/comments/${articleId}`, {
+    params: {
+      page,
+      limit,
+    },
+  });
 };
 
 export const addComment = (articleId, data) => {

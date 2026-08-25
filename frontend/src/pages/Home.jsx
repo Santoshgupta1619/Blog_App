@@ -8,6 +8,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import { htmlToText } from "../utils/htmlToText";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import "./Home.css";
 
 const Home = () => {
@@ -20,7 +21,8 @@ const Home = () => {
 
   const [categories, setCategories] = useState(["All"]);
   const [trendingArticles, setTrendingArticles] = useState([]);
-  const [homepageCategory, setHomepageCategory] = useState(null);
+  const [homepageCategories, setHomepageCategories] = useState([]);
+  const [activeCategoryIndex, setActiveCategoryIndex] = useState(0);
 
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedTag, setSelectedTag] = useState(null);
@@ -86,9 +88,11 @@ const Home = () => {
   const fetchHomepageCategory = async () => {
     try {
       const res = await getHomepageCategory();
-      setHomepageCategory(res.data);
+
+      setHomepageCategories(res.data || []);
+      setActiveCategoryIndex(0);
     } catch (err) {
-      console.error("Error fetching homepage category:", err);
+      console.error("Error fetching homepage categories:", err);
     }
   };
 
@@ -107,19 +111,35 @@ const Home = () => {
     setSelectedCategory(category);
     setSelectedTag(null);
   };
+  const handlePreviousCategory = () => {
+    if (homepageCategories.length === 0) return;
+
+    setActiveCategoryIndex((prev) =>
+      prev === 0 ? homepageCategories.length - 1 : prev - 1,
+    );
+  };
+
+  const handleNextCategory = () => {
+    if (homepageCategories.length === 0) return;
+
+    setActiveCategoryIndex((prev) =>
+      prev === homepageCategories.length - 1 ? 0 : prev + 1,
+    );
+  };
+
+  const activeHomepageCategory = homepageCategories[activeCategoryIndex];
 
   // =====================================================
   // CATEGORY SECTION - VIEW ALL
   // =====================================================
 
   const handleViewAllCategory = () => {
-    if (!homepageCategory?.category) return;
+    if (!activeHomepageCategory?.category) return;
 
-    setSelectedCategory(homepageCategory.category);
+    setSelectedCategory(activeHomepageCategory.category);
     setSelectedTag(null);
     setPage(1);
 
-    // Scroll back to the main article section
     setTimeout(() => {
       window.scrollTo({
         top: 0,
@@ -347,116 +367,160 @@ const Home = () => {
             )}
 
             {/* =====================================================
-                CATEGORY FEATURE SECTION
-            ====================================================== */}
+    CATEGORY FEATURE CAROUSEL
+===================================================== */}
 
             {selectedCategory === "All" &&
-              homepageCategory?.category &&
-              homepageCategory?.articles?.length > 0 && (
+              activeHomepageCategory?.category &&
+              activeHomepageCategory?.articles?.length > 0 && (
                 <section className="editorial-section homepage-category-section">
-                  {/* CATEGORY HEADER */}
-
-                  <div className="category-feature-heading">
-                    <div className="category-feature-title">
-                      {homepageCategory.category}
-                    </div>
-
+                  <div className="homepage-category-carousel">
+                    {/* LEFT ARROW */}
                     <button
-                      className="category-view-all"
-                      onClick={handleViewAllCategory}
+                      className="category-carousel-arrow category-carousel-prev"
+                      onClick={handlePreviousCategory}
+                      aria-label="Previous category"
                     >
-                      View All →
+                      <FiChevronLeft />
                     </button>
-                  </div>
 
-                  {/* CATEGORY ARTICLES */}
-
-                  <div className="category-feature-grid">
-                    {/* LARGE FEATURE ARTICLE */}
-
-                    {homepageCategory.articles[0] && (
-                      <article
-                        className="category-feature-main"
-                        onClick={() =>
-                          openArticle(homepageCategory.articles[0].slug)
-                        }
-                      >
-                        <div className="category-feature-main-image">
-                          {homepageCategory.articles[0].image_url ? (
-                            <img
-                              src={homepageCategory.articles[0].image_url}
-                              alt={homepageCategory.articles[0].title}
-                            />
-                          ) : (
-                            <div className="image-placeholder">
-                              <span>THE INDIAN GUIDE</span>
-                            </div>
-                          )}
+                    {/* CATEGORY CONTENT */}
+                    <div className="homepage-category-content">
+                      {/* CATEGORY HEADER */}
+                      <div className="category-feature-heading">
+                        <div className="category-feature-title">
+                          {activeHomepageCategory.category}
                         </div>
 
-                        <div className="category-feature-main-content">
-                          <div className="article-category">
-                            {homepageCategory.category}
-                          </div>
+                        <button
+                          className="category-view-all"
+                          onClick={() => {
+                            setSelectedCategory(
+                              activeHomepageCategory.category,
+                            );
+                            setSelectedTag(null);
+                            setPage(1);
 
-                          <h2>{homepageCategory.articles[0].title}</h2>
-
-                          <p>
-                            {htmlToText(
-                              homepageCategory.articles[0].content || "",
-                            ).slice(0, 180)}
-                            ...
-                          </p>
-
-                          <div className="editorial-meta">
-                            <span>
-                              {dayjs(
-                                homepageCategory.articles[0].created_at,
-                              ).format("MMM D, YYYY")}
-                            </span>
-                          </div>
-                        </div>
-                      </article>
-                    )}
-
-                    {/* RIGHT SIDE ARTICLES */}
-
-                    <div className="category-feature-side">
-                      {homepageCategory.articles.slice(1, 4).map((article) => (
-                        <article
-                          key={article.id}
-                          className="category-feature-side-item"
-                          onClick={() => openArticle(article.slug)}
+                            setTimeout(() => {
+                              window.scrollTo({
+                                top: 0,
+                                behavior: "smooth",
+                              });
+                            }, 50);
+                          }}
                         >
-                          <div className="category-feature-side-image">
-                            {article.image_url ? (
-                              <img
-                                src={article.image_url}
-                                alt={article.title}
-                              />
-                            ) : (
-                              <div className="image-placeholder">
-                                <span>THE INDIAN GUIDE</span>
+                          View All →
+                        </button>
+                      </div>
+
+                      {/* CATEGORY ARTICLES */}
+                      <div className="category-feature-grid">
+                        {/* MAIN ARTICLE */}
+                        {activeHomepageCategory.articles[0] && (
+                          <article
+                            className="category-feature-main"
+                            onClick={() =>
+                              openArticle(
+                                activeHomepageCategory.articles[0].slug,
+                              )
+                            }
+                          >
+                            <div className="category-feature-main-image">
+                              {activeHomepageCategory.articles[0].image_url ? (
+                                <img
+                                  src={
+                                    activeHomepageCategory.articles[0].image_url
+                                  }
+                                  alt={activeHomepageCategory.articles[0].title}
+                                />
+                              ) : (
+                                <div className="image-placeholder">
+                                  <span>THE INDIAN GUIDE</span>
+                                </div>
+                              )}
+                            </div>
+
+                            <div className="category-feature-main-content">
+                              <div className="article-category">
+                                {activeHomepageCategory.category}
                               </div>
-                            )}
-                          </div>
 
-                          <div className="category-feature-side-content">
-                            <div className="article-category">
-                              {homepageCategory.category}
+                              <h2>
+                                {activeHomepageCategory.articles[0].title}
+                              </h2>
+
+                              <p>
+                                {htmlToText(
+                                  activeHomepageCategory.articles[0].content ||
+                                    "",
+                                ).slice(0, 180)}
+                                ...
+                              </p>
+
+                              <div className="editorial-meta">
+                                <span>
+                                  {dayjs(
+                                    activeHomepageCategory.articles[0]
+                                      .created_at,
+                                  ).format("MMM D, YYYY")}
+                                </span>
+                              </div>
                             </div>
+                          </article>
+                        )}
 
-                            <h3>{article.title}</h3>
+                        {/* RIGHT SIDE ARTICLES */}
+                        <div className="category-feature-side">
+                          {activeHomepageCategory.articles
+                            .slice(1, 4)
+                            .map((article) => (
+                              <article
+                                key={article.id}
+                                className="category-feature-side-item"
+                                onClick={() => openArticle(article.slug)}
+                              >
+                                <div className="category-feature-side-image">
+                                  {article.image_url ? (
+                                    <img
+                                      src={article.image_url}
+                                      alt={article.title}
+                                    />
+                                  ) : (
+                                    <div className="image-placeholder">
+                                      <span>THE INDIAN GUIDE</span>
+                                    </div>
+                                  )}
+                                </div>
 
-                            <div className="editorial-meta">
-                              <span>
-                                {dayjs(article.created_at).format("MMM D")}
-                              </span>
-                            </div>
-                          </div>
-                        </article>
-                      ))}
+                                <div className="category-feature-side-content">
+                                  <div className="article-category">
+                                    {activeHomepageCategory.category}
+                                  </div>
+
+                                  <h3>{article.title}</h3>
+
+                                  <div className="editorial-meta">
+                                    <span>
+                                      {dayjs(article.created_at).format(
+                                        "MMM D",
+                                      )}
+                                    </span>
+                                  </div>
+                                </div>
+                              </article>
+                            ))}
+                        </div>
+                      </div>
                     </div>
+
+                    {/* RIGHT ARROW */}
+                    <button
+                      className="category-carousel-arrow category-carousel-next"
+                      onClick={handleNextCategory}
+                      aria-label="Next category"
+                    >
+                      <FiChevronRight />
+                    </button>
                   </div>
                 </section>
               )}

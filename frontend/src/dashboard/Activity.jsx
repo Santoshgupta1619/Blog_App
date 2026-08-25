@@ -1,10 +1,23 @@
 import { useEffect, useState } from "react";
 import { getUserLikes, getUserComments } from "../api/articles";
+import {
+  Heart,
+  MessageCircle,
+  ArrowRight,
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react";
+import "./Activity.css";
 
 const Activity = () => {
   const [likes, setLikes] = useState([]);
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const [showAllLikes, setShowAllLikes] = useState(false);
+  const [showAllComments, setShowAllComments] = useState(false);
+
+  const VISIBLE_ITEMS = 3;
 
   useEffect(() => {
     fetchActivity();
@@ -14,7 +27,7 @@ const Activity = () => {
     try {
       const [likesRes, commentsRes] = await Promise.all([
         getUserLikes(),
-        getUserComments()
+        getUserComments(),
       ]);
 
       setLikes(likesRes.data);
@@ -26,70 +39,266 @@ const Activity = () => {
     }
   };
 
-  if (loading) return <p>Loading activity...</p>;
+  if (loading) {
+    return (
+      <div className="activity-page">
+        <div className="activity-loading">
+          <div className="activity-spinner"></div>
+          <span>Loading your activity...</span>
+        </div>
+      </div>
+    );
+  }
+
+  const visibleLikes = showAllLikes
+    ? likes
+    : likes.slice(0, VISIBLE_ITEMS);
+
+  const visibleComments = showAllComments
+    ? comments
+    : comments.slice(0, VISIBLE_ITEMS);
 
   return (
-    <div>
-      <h2 className="mb-4">Your Activity</h2>
+    <div className="activity-page">
 
-      {/* ❤️ Likes Section */}
-      <div className="mb-5">
-        <h4>❤️ Liked Articles</h4>
+      {/* PAGE HEADER */}
+      <div className="activity-header">
+        <div>
+          <span className="activity-eyebrow">ACCOUNT</span>
+
+          <h2>Your Activity</h2>
+
+          <p>
+            Keep track of the articles you've liked and the comments you've
+            shared.
+          </p>
+        </div>
+      </div>
+
+      {/* =========================
+          LIKES SECTION
+      ========================= */}
+
+      <section className="activity-section">
+
+        <div className="activity-section-header">
+
+          <div className="activity-section-title">
+
+            <span className="activity-icon like-icon">
+              <Heart size={19} strokeWidth={2.2} />
+            </span>
+
+            <div>
+              <h4>Liked Articles</h4>
+
+              <span>
+                {likes.length}{" "}
+                {likes.length === 1 ? "article" : "articles"}
+              </span>
+            </div>
+
+          </div>
+
+          {/* VIEW ALL */}
+          {likes.length > VISIBLE_ITEMS && (
+            <button
+              type="button"
+              className="activity-view-all"
+              onClick={() => setShowAllLikes(!showAllLikes)}
+            >
+              {showAllLikes ? (
+                <>
+                  Show Less
+                  <ChevronUp size={15} />
+                </>
+              ) : (
+                <>
+                  View All
+                  <ChevronDown size={15} />
+                </>
+              )}
+            </button>
+          )}
+
+        </div>
 
         {likes.length === 0 ? (
-          <p>No likes yet</p>
+          <div className="activity-empty">
+
+            <Heart size={24} strokeWidth={1.7} />
+
+            <div>
+              <strong>No liked articles yet</strong>
+
+              <p>
+                Articles you like will appear here.
+              </p>
+            </div>
+
+          </div>
         ) : (
-          <ul className="list-group">
-            {likes.map((item) => (
-              <li
+          <div className="activity-list">
+
+            {visibleLikes.map((item) => (
+              <div
                 key={item.id}
-                className="list-group-item d-flex justify-content-between"
+                className="activity-item"
               >
-                <span>{item.title}</span>
+
+                <div className="activity-item-icon like-item-icon">
+                  <Heart size={17} strokeWidth={2} />
+                </div>
+
+                <div className="activity-item-content">
+
+                  <a
+                    href={`/article/${item.slug}`}
+                    className="activity-article-title"
+                  >
+                    {item.title}
+                  </a>
+
+                  <span className="activity-item-meta">
+                    You liked this article
+                  </span>
+
+                </div>
 
                 <a
                   href={`/article/${item.slug}`}
-                  className="btn btn-sm btn-outline-primary"
+                  className="activity-action"
                 >
-                  View
+                  <span>View</span>
+                  <ArrowRight size={16} strokeWidth={2} />
                 </a>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-
-      {/* 💬 Comments Section */}
-      <div>
-        <h4>💬 Your Comments</h4>
-
-        {comments.length === 0 ? (
-          <p>No comments yet</p>
-        ) : (
-          <div className="list-group">
-            {comments.map((c) => (
-              <div key={c.id} className="list-group-item">
-                
-                <p className="mb-1">{c.content}</p>
-
-                <small className="text-muted">
-                  On: {c.title}
-                </small>
-
-                <div className="mt-2">
-                  <a
-                    href={`/article/${c.slug}`}
-                    className="btn btn-sm btn-outline-secondary"
-                  >
-                    Go to Article
-                  </a>
-                </div>
 
               </div>
             ))}
+
           </div>
         )}
-      </div>
+
+      </section>
+
+      {/* =========================
+          COMMENTS SECTION
+      ========================= */}
+
+      <section className="activity-section">
+
+        <div className="activity-section-header">
+
+          <div className="activity-section-title">
+
+            <span className="activity-icon comment-icon">
+              <MessageCircle size={19} strokeWidth={2.2} />
+            </span>
+
+            <div>
+              <h4>Your Comments</h4>
+
+              <span>
+                {comments.length}{" "}
+                {comments.length === 1 ? "comment" : "comments"}
+              </span>
+            </div>
+
+          </div>
+
+          {/* VIEW ALL */}
+          {comments.length > VISIBLE_ITEMS && (
+            <button
+              type="button"
+              className="activity-view-all"
+              onClick={() =>
+                setShowAllComments(!showAllComments)
+              }
+            >
+              {showAllComments ? (
+                <>
+                  Show Less
+                  <ChevronUp size={15} />
+                </>
+              ) : (
+                <>
+                  View All
+                  <ChevronDown size={15} />
+                </>
+              )}
+            </button>
+          )}
+
+        </div>
+
+        {comments.length === 0 ? (
+          <div className="activity-empty">
+
+            <MessageCircle
+              size={24}
+              strokeWidth={1.7}
+            />
+
+            <div>
+              <strong>No comments yet</strong>
+
+              <p>
+                Your comments will appear here.
+              </p>
+            </div>
+
+          </div>
+        ) : (
+          <div className="activity-list">
+
+            {visibleComments.map((c) => (
+              <div
+                key={c.id}
+                className="activity-item comment-item"
+              >
+
+                <div className="activity-item-icon comment-item-icon">
+                  <MessageCircle
+                    size={17}
+                    strokeWidth={2}
+                  />
+                </div>
+
+                <div className="activity-item-content">
+
+                  <p className="activity-comment">
+                    {c.content}
+                  </p>
+
+                  <span className="activity-item-meta">
+                    On{" "}
+                    <a href={`/article/${c.slug}`}>
+                      {c.title}
+                    </a>
+                  </span>
+
+                </div>
+
+                <a
+                  href={`/article/${c.slug}`}
+                  className="activity-action"
+                >
+                  <span>View</span>
+
+                  <ArrowRight
+                    size={16}
+                    strokeWidth={2}
+                  />
+                </a>
+
+              </div>
+            ))}
+
+          </div>
+        )}
+
+      </section>
+
     </div>
   );
 };

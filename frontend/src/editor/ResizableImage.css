@@ -1,16 +1,137 @@
 .resizable-image-wrapper {
   position: relative;
   width: 100%;
-  margin: 20px 0;
+  margin: 28px 0;
 }
+
+/* ==============================
+   IMAGE
+============================== */
 
 .resizable-image-wrapper img {
   display: block;
   max-width: 100%;
   cursor: pointer;
   border-radius: 8px;
+  user-select: none;
 }
 
+
+/* ==============================
+   FLOATING IMAGE TOOLBAR
+============================== */
+
+.floating-toolbar {
+  position: absolute;
+  top: -52px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  display: flex;
+  align-items: center;
+  gap: 3px;
+
+  padding: 5px;
+
+  background: #ffffff;
+  border: 1px solid #dfe6e1;
+  border-radius: 10px;
+
+  box-shadow:
+    0 6px 20px rgba(28, 52, 36, 0.12),
+    0 2px 6px rgba(28, 52, 36, 0.06);
+
+  z-index: 1000;
+
+  white-space: nowrap;
+}
+
+
+/* ==============================
+   TOOLBAR BUTTON
+============================== */
+
+.image-tool-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 34px;
+  height: 34px;
+
+  padding: 0;
+
+  border: none;
+  border-radius: 7px;
+
+  background: transparent;
+  color: #536158;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.18s ease,
+    color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.image-tool-btn:hover {
+  background: #f0f5f1;
+  color: #214d35;
+}
+
+.image-tool-btn:active {
+  transform: scale(0.94);
+}
+
+
+/* ==============================
+   ACTIVE ALIGNMENT / LINK
+============================== */
+
+.image-tool-btn.active {
+  background: #e4efe6;
+  color: #214d35;
+}
+
+.image-tool-btn.link-active {
+  background: #dcecdf;
+  color: #214d35;
+}
+
+
+/* ==============================
+   REMOVE LINK
+============================== */
+
+.image-tool-btn.unlink-btn {
+  color: #a13b35;
+}
+
+.image-tool-btn.unlink-btn:hover {
+  background: #fff0ef;
+  color: #8f2f29;
+}
+
+
+/* ==============================
+   TOOLBAR DIVIDER
+============================== */
+
+.toolbar-separator {
+  width: 1px;
+  height: 22px;
+
+  margin: 0 4px;
+
+  background: #dfe6e1;
+}
+
+
+/* ==============================
+   OLD ALIGNMENT CLASSES
+   Kept for compatibility
+============================== */
 
 .image-left img {
   display: block;
@@ -29,20 +150,27 @@
   margin-left: auto;
   margin-right: 0;
 }
-.image-toolbar{
-    display:flex;
-    justify-content:center;
-    gap:8px;
-    margin-bottom:10px;
+
+
+/* ==============================
+   OLD IMAGE TOOLBAR
+   Kept for compatibility
+============================== */
+
+.image-toolbar {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 10px;
 }
 
-.image-toolbar button{
-    padding:6px 12px;
-    border:none;
-    border-radius:6px;
-    background:#214d35;
-    color:#fff;
-    cursor:pointer;
+.image-toolbar button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  background: #214d35;
+  color: #fff;
+  cursor: pointer;
 }
 
 .image-toolbar button:hover {
@@ -50,45 +178,25 @@
 }
 
 
+/* ==============================
+   MOBILE
+============================== */
 
-.floating-toolbar {
-  position: absolute;
-  top: -52px;
-  left: 50%;
-  transform: translateX(-50%);
+@media (max-width: 600px) {
+  .floating-toolbar {
+    top: -48px;
+    gap: 2px;
+    padding: 4px;
+    border-radius: 9px;
+  }
 
-  display: flex;
-  gap: 8px;
+  .image-tool-btn {
+    width: 32px;
+    height: 32px;
+  }
 
-  padding: 6px;
-
-  border-radius: 10px;
-
-  background: white;
-
-  box-shadow: 0 6px 18px rgba(0,0,0,.15);
-
-  z-index: 1000;
-}
-
-.floating-toolbar button {
-  width: 36px;
-  height: 36px;
-
-  border: none;
-  border-radius: 8px;
-
-  background: transparent;
-
-  cursor: pointer;
-
-  transition: .2s;
-}
-
-.floating-toolbar button:hover {
-  background: #f3f3f3;
-}
-
-.floating-toolbar i {
-  font-size: 18px;
+  .toolbar-separator {
+    height: 20px;
+    margin: 0 3px;
+  }
 }
