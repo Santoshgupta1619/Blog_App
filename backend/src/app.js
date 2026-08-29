@@ -8,6 +8,7 @@ import uploadRoute from "./routes/uploadRoute.js";
 import userRoutes from "./routes/userRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
+import writerRoutes from "./routes/writerRoutes.js";
 
 
 
@@ -34,7 +35,7 @@ app.use("/api/upload", uploadRoute);
 
 app.use("/api/users", userRoutes);
 app.use("/api/admin", adminRoutes);
-
+app.use("/api/writer", writerRoutes);
 app.use("/api/categories", categoryRoutes);
 
 

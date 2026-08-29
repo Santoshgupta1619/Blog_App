@@ -68,20 +68,30 @@ export const getProfile = async (req, res) => {
     const user_id = req.user.id;
 
     const result = await pool.query(
-      `SELECT id, name, email, created_at
+      `SELECT 
+        id,
+        name,
+        email,
+        is_writer,
+        created_at
        FROM users
        WHERE id = $1`,
       [user_id]
     );
 
     if (result.rows.length === 0) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({
+        message: "User not found",
+      });
     }
 
     res.json(result.rows[0]);
   } catch (err) {
-    console.error(err); // 🔥 ADD THIS
-    res.status(500).json({ error: "Failed to fetch profile" });
+    console.error("GET PROFILE ERROR:", err);
+
+    res.status(500).json({
+      error: "Failed to fetch profile",
+    });
   }
 };
 

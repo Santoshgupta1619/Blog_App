@@ -8,6 +8,10 @@ const pool = new Pool({
   ssl: {
     rejectUnauthorized: false,
   },
+
+  connectionTimeoutMillis: 10000,
+  idleTimeoutMillis: 30000,
+  max: 10,
 });
 
 // Set public schema for every new PostgreSQL connection

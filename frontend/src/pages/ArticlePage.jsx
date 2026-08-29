@@ -61,7 +61,7 @@ const [loadingComments, setLoadingComments] = useState(false);
 const fetchData = async () => {
   try {
     const res = await getArticleBySlug(slug);
-
+    console.log("Article Data:", res.data);
     setArticle(res.data);
 
     // Get first page of comments
@@ -307,6 +307,7 @@ const handleCopyLink = async () => {
 
 
   if (!article) return <p className="loading">Loading...</p>;
+  
 
   return (
     <div className="page">
@@ -318,12 +319,34 @@ const handleCopyLink = async () => {
 
         {/* META */}
         <div className="article-meta">
-          <span>✍️ Author</span>
-          <span> • </span>
-          <span>
-            {new Date(article.created_at).toDateString()}
-          </span>
-        </div>
+
+  <div className="article-author">
+
+    {article.writer_image_url ? (
+  <img
+    src={article.writer_image_url}
+    alt={article.writer_name || "Admin"}
+    className="article-author-avatar"
+  />
+    ) : (
+      <div className="article-author-avatar article-author-placeholder">
+        {(article.writer_name || "W").charAt(0).toUpperCase()}
+      </div>
+    )}
+
+    <div className="article-author-info">
+      <span className="article-author-name">
+        {article.writer_name || "Writer"}
+      </span>
+
+      <span className="article-author-date">
+        {new Date(article.created_at).toDateString()}
+      </span>
+    </div>
+
+  </div>
+
+</div>
 
         {/* IMAGE */}
         <img

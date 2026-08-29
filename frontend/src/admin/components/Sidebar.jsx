@@ -25,6 +25,10 @@ export default function Sidebar() {
         <li className="nav-item mb-2">
           <Link className="nav-link text-white" to="/admin/adminbookmark">Bookmark</Link>
         </li>
+
+        <li className="nav-item mb-2">
+          <Link className="nav-link text-white" to="/admin/writer-requests"> Writer Requests</Link>
+        </li>
       </ul>
     </div>
   );

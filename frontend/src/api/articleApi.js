@@ -30,6 +30,9 @@ export const getArticleBySlug = (slug) =>
 export const createArticle = (data) =>
   API.post("/articles", data);
 
+export const updateArticle = (articleId, data) =>
+  API.put(`/articles/${articleId}`, data);
+
 export const togglePostLike = (articleId) => {
   return API.post(`/articles/${articleId}/like`);
 };

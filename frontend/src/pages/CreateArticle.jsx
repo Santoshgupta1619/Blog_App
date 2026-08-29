@@ -137,7 +137,7 @@ const handleTagPaste = (e) => {
       }
 
       // CATEGORY VALIDATION
-      if (!category.trim()) {
+      if (!category()) {
         alert("Please enter a category.");
         return;
       }
@@ -164,7 +164,7 @@ const handleTagPaste = (e) => {
         title: title.trim(),
         content,
         image_url: imageUrl,
-        category: category.trim(),
+        category_id: category,
         tags,
         status,
         scheduled_at:
@@ -269,7 +269,7 @@ const handleTagPaste = (e) => {
             <option value="">Select Category</option>
 
             {categories.map((cat) => (
-              <option key={cat.id} value={cat.name}>
+              <option key={cat.id} value={cat.id}>
                 {cat.name}
               </option>
             ))}

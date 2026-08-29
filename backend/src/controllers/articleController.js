@@ -2,82 +2,224 @@ import pool from "../config/db.js";
 import slugify from "slugify";
 
 // 🔹 CREATE ARTICLE
+// 🔹 CREATE ARTICLE
 export const createArticle = async (req, res) => {
   try {
-    const { title, content, image_url, category, tags, status, scheduled_at } = req.body;
+    const {
+      title,
+      content,
+      image_url,
+      category_id,
+      tags,
+      status,
+      scheduled_at,
+    } = req.body;
 
-    const slug = slugify(title, { lower: true });
+    const userId = req.user.id;
+    const userRole = req.user.role;
 
-    // ✅ CATEGORY
-    let category_id;
+    // ======================================================
+    // BASIC VALIDATION
+    // ======================================================
 
-    const existingCategory = await pool.query(
-      "SELECT id FROM categories WHERE name = $1",
-      [category]
-    );
-
-    if (existingCategory.rows.length > 0) {
-      category_id = existingCategory.rows[0].id;
-    } else {
-      const newCategory = await pool.query(
-        "INSERT INTO categories (name) VALUES ($1) RETURNING id",
-        [category]
-      );
-      category_id = newCategory.rows[0].id;
+    if (!title || !title.trim()) {
+      return res.status(400).json({
+        message: "Title is required.",
+      });
     }
 
-    // ✅ INSERT ARTICLE (UPDATED)
+    if (!content || !content.trim()) {
+      return res.status(400).json({
+        message: "Content is required.",
+      });
+    }
+
+    if (!category_id) {
+      return res.status(400).json({
+        message: "Category is required.",
+      });
+    }
+
+    // ======================================================
+    // CHECK CATEGORY EXISTS
+    // ======================================================
+
+    const categoryResult = await pool.query(
+      `
+      SELECT id, name
+      FROM categories
+      WHERE id = $1
+      `,
+      [category_id]
+    );
+
+    if (categoryResult.rows.length === 0) {
+      return res.status(404).json({
+        message: "Category not found.",
+      });
+    }
+
+    // ======================================================
+    // ADMIN
+    // ======================================================
+
+    if (userRole === "admin") {
+      // Admin can create in any existing category.
+    }
+
+    // ======================================================
+    // WRITER
+    // ======================================================
+
+    else {
+      // Check whether user has an approved writer profile
+      const writerResult = await pool.query(
+        `
+        SELECT id
+        FROM writers
+        WHERE user_id = $1
+        `,
+        [userId]
+      );
+
+      if (writerResult.rows.length === 0) {
+        return res.status(403).json({
+          message:
+            "You do not have permission to create articles. Please become an approved writer first.",
+        });
+      }
+
+      // Check whether this category is approved for this writer
+      const writerCategory = await pool.query(
+        `
+        SELECT wc.id
+        FROM writer_categories wc
+
+        INNER JOIN writers w
+          ON w.id = wc.writer_id
+
+        WHERE w.user_id = $1
+          AND wc.category_id = $2
+        `,
+        [userId, category_id]
+      );
+
+      if (writerCategory.rows.length === 0) {
+        return res.status(403).json({
+          message:
+            "You are not approved to write articles in this category.",
+        });
+      }
+    }
+
+    // ======================================================
+    // SLUG
+    // ======================================================
+
+    const slug = slugify(title, {
+      lower: true,
+      strict: true,
+    });
+
+    // ======================================================
+    // CREATE ARTICLE
+    // ======================================================
+
     const articleResult = await pool.query(
-      `INSERT INTO articles 
-        (title, slug, content, image_url, category_id, author_id, status, scheduled_at)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-       RETURNING *`,
-      [
+      `
+      INSERT INTO articles
+      (
         title,
         slug,
         content,
         image_url,
         category_id,
-        req.user.id,
+        author_id,
+        status,
+        scheduled_at
+      )
+      VALUES
+      ($1, $2, $3, $4, $5, $6, $7, $8)
+      RETURNING *
+      `,
+      [
+        title.trim(),
+        slug,
+        content,
+        image_url || null,
+        category_id,
+        userId,
         status || "published",
-        scheduled_at || null,
+        status === "scheduled"
+          ? scheduled_at || null
+          : null,
       ]
     );
 
     const article = articleResult.rows[0];
 
-    // ✅ TAGS (same as before)
-    if (tags && tags.length > 0) {
-      for (let tag of tags) {
+    // ======================================================
+    // TAGS
+    // ======================================================
+
+    if (tags && Array.isArray(tags) && tags.length > 0) {
+      for (const tag of tags) {
+        if (!tag || !tag.trim()) {
+          continue;
+        }
+
         let tagRes = await pool.query(
-          `SELECT id FROM tags WHERE name = $1`,
-          [tag]
+          `
+          SELECT id
+          FROM tags
+          WHERE name = $1
+          `,
+          [tag.trim()]
         );
 
         let tagId;
 
         if (tagRes.rows.length === 0) {
           const newTag = await pool.query(
-            `INSERT INTO tags (name) VALUES ($1) RETURNING id`,
-            [tag]
+            `
+            INSERT INTO tags (name)
+            VALUES ($1)
+            RETURNING id
+            `,
+            [tag.trim()]
           );
+
           tagId = newTag.rows[0].id;
         } else {
           tagId = tagRes.rows[0].id;
         }
 
         await pool.query(
-          `INSERT INTO article_tags (article_id, tag_id)
-           VALUES ($1, $2)`,
+          `
+          INSERT INTO article_tags
+          (article_id, tag_id)
+          VALUES ($1, $2)
+          `,
           [article.id, tagId]
         );
       }
     }
 
-    res.json(article);
+    // ======================================================
+    // RESPONSE
+    // ======================================================
+
+    res.status(201).json({
+      message: "Article created successfully.",
+      article,
+    });
+
   } catch (err) {
-    console.error("CREATE ERROR:", err);
-    res.status(500).json({ error: err.message });
+    console.error("CREATE ARTICLE ERROR:", err);
+
+    res.status(500).json({
+      error: err.message,
+    });
   }
 };
 
@@ -235,64 +377,95 @@ export const getArticleBySlug = async (req, res) => {
   try {
     const { slug } = req.params;
 
-    // ✅ important
+    // Logged-in user ID
     const userId = req.user?.id || null;
 
     const result = await pool.query(
       `
       SELECT 
-  a.*,
-  c.name AS category,
+        a.*,
 
-  COALESCE(
-    json_agg(DISTINCT t.name) 
-    FILTER (WHERE t.name IS NOT NULL),
-    '[]'
-  ) AS tags,
+        c.name AS category,
 
-  -- LIKE COUNT
-  (
-    SELECT COUNT(*) 
-    FROM article_likes al 
-    WHERE al.article_id = a.id
-  ) AS like_count,
+        -- WRITER INFORMATION
+        w.author_name AS writer_name,
+        w.image_url AS writer_image_url,
 
-  -- SAFE LIKE
-  CASE 
-    WHEN $2::uuid IS NULL THEN false
-    ELSE EXISTS (
-      SELECT 1 
-      FROM article_likes al 
-      WHERE al.article_id = a.id AND al.user_id = $2::uuid
-    )
-  END AS is_liked,
+        COALESCE(
+          json_agg(DISTINCT t.name)
+          FILTER (WHERE t.name IS NOT NULL),
+          '[]'
+        ) AS tags,
 
-  -- SAFE BOOKMARK
-  CASE 
-    WHEN $2::uuid IS NULL THEN false
-    ELSE EXISTS (
-      SELECT 1 
-      FROM bookmarks b 
-      WHERE b.article_id = a.id AND b.user_id = $2::uuid
-    )
-  END AS is_bookmarked
+        -- LIKE COUNT
+        (
+          SELECT COUNT(*)
+          FROM article_likes al
+          WHERE al.article_id = a.id
+        ) AS like_count,
 
-FROM articles a
-LEFT JOIN categories c ON a.category_id = c.id
-LEFT JOIN article_tags at ON a.id = at.article_id
-LEFT JOIN tags t ON at.tag_id = t.id
+        -- SAFE LIKE
+        CASE
+          WHEN $2::uuid IS NULL THEN false
+          ELSE EXISTS (
+            SELECT 1
+            FROM article_likes al
+            WHERE al.article_id = a.id
+              AND al.user_id = $2::uuid
+          )
+        END AS is_liked,
 
-WHERE a.slug = $1
-GROUP BY a.id, c.name
+        -- SAFE BOOKMARK
+        CASE
+          WHEN $2::uuid IS NULL THEN false
+          ELSE EXISTS (
+            SELECT 1
+            FROM bookmarks b
+            WHERE b.article_id = a.id
+              AND b.user_id = $2::uuid
+          )
+        END AS is_bookmarked
+
+      FROM articles a
+
+      LEFT JOIN categories c
+        ON a.category_id = c.id
+
+      -- CONNECT ARTICLE → USER → WRITER
+      LEFT JOIN writers w
+        ON w.user_id = a.author_id
+
+      LEFT JOIN article_tags at
+        ON a.id = at.article_id
+
+      LEFT JOIN tags t
+        ON at.tag_id = t.id
+
+      WHERE a.slug = $1
+
+      GROUP BY
+        a.id,
+        c.name,
+        w.author_name,
+        w.image_url
       `,
-      [slug, userId] // ✅ VERY IMPORTANT
+      [slug, userId]
     );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        message: "Article not found",
+      });
+    }
 
     res.json(result.rows[0]);
 
   } catch (err) {
     console.error("GET ARTICLE ERROR:", err);
-    res.status(500).json({ error: err.message });
+
+    res.status(500).json({
+      error: err.message,
+    });
   }
 };
 
@@ -779,6 +952,44 @@ export const getRecommendedArticles = async (req, res) => {
 
   } catch (err) {
     console.error(err);
+
+    res.status(500).json({
+      error: err.message,
+    });
+  }
+};
+
+// ======================================================
+// GET ADMIN'S OWN ARTICLES
+// ======================================================
+
+export const getAdminArticles = async (req, res) => {
+  try {
+    const adminId = req.user.id;
+
+    console.log("ADMIN ID:", adminId);
+    console.log("ADMIN ROLE:", req.user.role);
+
+    const result = await pool.query(
+      `
+      SELECT
+        a.*,
+        c.name AS category
+      FROM articles a
+      LEFT JOIN categories c
+        ON a.category_id = c.id
+      WHERE a.author_id = $1
+      ORDER BY a.created_at DESC
+      `,
+      [adminId]
+    );
+
+    console.log("ADMIN ARTICLES:", result.rows);
+
+    res.json(result.rows);
+
+  } catch (err) {
+    console.error("GET ADMIN ARTICLES ERROR:", err);
 
     res.status(500).json({
       error: err.message,

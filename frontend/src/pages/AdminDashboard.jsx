@@ -71,6 +71,17 @@ const AdminDashboard = () => {
             </Link>
           </li>
 
+          {/* Writer Requests */}
+<li className="nav-item">
+  <Link
+    to="/admin/writer-requests"
+    className="nav-link text-white d-flex align-items-center"
+  >
+    <i className="bi bi-person-plus me-3"></i>
+    Writer Requests
+  </Link>
+</li>
+
         </ul>
 
       </div>

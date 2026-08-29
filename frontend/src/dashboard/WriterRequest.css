@@ -1,0 +1,794 @@
+
+/* =========================================================
+   WRITER REQUEST PAGE
+========================================================= */
+
+.writer-request-page {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 38px 30px 70px;
+  box-sizing: border-box;
+  color: #111827;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.writer-request-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.writer-request-kicker {
+  display: block;
+  margin-bottom: 7px;
+  font-size: 10px;
+  line-height: 1.2;
+  font-weight: 800;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: #2563eb;
+}
+
+.writer-request-header h2 {
+  margin: 0;
+  font-size: 30px;
+  line-height: 1.2;
+  font-weight: 750;
+  letter-spacing: -0.6px;
+  color: #111827;
+}
+
+.writer-request-header p {
+  max-width: 680px;
+  margin: 9px 0 0;
+  font-size: 13px;
+  line-height: 1.65;
+  color: #6b7280;
+}
+
+
+/* =========================================================
+   BACK BUTTON
+========================================================= */
+
+.writer-request-back-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 38px;
+  padding: 0 15px;
+
+  border: 1px solid #d9dee7;
+  border-radius: 8px;
+
+  background: #ffffff;
+  color: #374151;
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.writer-request-back-btn:hover {
+  background: #f8fafc;
+  border-color: #b9c2cf;
+  color: #111827;
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   MAIN CARD
+========================================================= */
+
+.writer-request-card {
+  width: 100%;
+  overflow: hidden;
+
+  border: 1px solid #e1e6e2;
+  border-radius: 14px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 2px 5px rgba(15, 23, 42, 0.025),
+    0 12px 30px rgba(29, 64, 45, 0.045);
+}
+
+
+/* =========================================================
+   CARD HEADER
+========================================================= */
+
+.writer-request-card-header {
+  padding: 27px 30px 25px;
+  border-bottom: 1px solid #edf0ed;
+}
+
+.writer-request-label {
+  display: block;
+  margin-bottom: 7px;
+
+  font-size: 10px;
+  line-height: 1.2;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+
+  color: #7c8a80;
+}
+
+.writer-request-card-header h3 {
+  margin: 0;
+
+  font-size: 19px;
+  line-height: 1.4;
+  font-weight: 750;
+  letter-spacing: -0.2px;
+
+  color: #203126;
+}
+
+.writer-request-card-header p {
+  max-width: 700px;
+  margin: 8px 0 0;
+
+  font-size: 12.5px;
+  line-height: 1.65;
+
+  color: #718077;
+}
+
+
+/* =========================================================
+   REQUEST TYPE
+   Vertical on all screen sizes
+========================================================= */
+
+.writer-request-type {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  padding: 25px 30px 0;
+}
+
+.writer-request-type button {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  width: 100%;
+  min-height: 82px;
+
+  padding: 16px 18px;
+
+  box-sizing: border-box;
+
+  border: 1px solid #dfe5df;
+  border-radius: 10px;
+
+  background: #ffffff;
+  color: #374151;
+
+  font-family: inherit;
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.15s ease;
+}
+
+.writer-request-type button:hover {
+  border-color: #b9ceb9;
+  background: #fbfdfb;
+  transform: translateY(-1px);
+}
+
+.writer-request-type button.active {
+  border-color: #4d8964;
+  background: #f4faf5;
+  box-shadow: 0 0 0 1px #4d8964;
+}
+
+.writer-request-type button.active::before {
+  content: "";
+
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+
+  width: 4px;
+
+  border-radius: 10px 0 0 10px;
+  background: #4d8964;
+}
+
+.writer-request-option-title {
+  display: block;
+
+  margin-bottom: 5px;
+
+  font-size: 13px;
+  line-height: 1.4;
+  font-weight: 750;
+
+  color: #26372b;
+}
+
+.writer-request-type button.active
+.writer-request-option-title {
+  color: #214d35;
+}
+
+.writer-request-option-text {
+  display: block;
+
+  font-size: 11.5px;
+  line-height: 1.55;
+
+  color: #718077;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.writer-request-form {
+  display: flex;
+  flex-direction: column;
+
+  padding: 25px 30px 30px;
+}
+
+
+/* =========================================================
+   FIELD
+========================================================= */
+
+.writer-request-field {
+  width: 100%;
+  margin-bottom: 23px;
+}
+
+.writer-request-field label {
+  display: block;
+  margin-bottom: 8px;
+
+  font-size: 11.5px;
+  line-height: 1.4;
+  font-weight: 750;
+
+  color: #3c5142;
+}
+
+
+/* =========================================================
+   INPUT / SELECT
+========================================================= */
+
+.writer-request-field select,
+.writer-request-field input {
+  display: block;
+
+  width: 100%;
+  height: 45px;
+
+  padding: 0 13px;
+
+  box-sizing: border-box;
+
+  border: 1px solid #d4ddd5;
+  border-radius: 8px;
+
+  outline: none;
+
+  background: #ffffff;
+  color: #26372b;
+
+  font-family: inherit;
+  font-size: 12.5px;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.writer-request-field select {
+  cursor: pointer;
+}
+
+.writer-request-field input::placeholder {
+  color: #9ca8a0;
+}
+
+.writer-request-field select:hover,
+.writer-request-field input:hover {
+  border-color: #b8c8bb;
+}
+
+.writer-request-field select:focus,
+.writer-request-field input:focus {
+  border-color: #4d8964;
+  box-shadow: 0 0 0 3px rgba(77, 137, 100, 0.12);
+}
+
+.writer-request-field select:disabled,
+.writer-request-field input:disabled {
+  background: #f5f7f5;
+  color: #9ca39c;
+  cursor: not-allowed;
+}
+
+
+/* =========================================================
+   HELP TEXT
+========================================================= */
+
+.writer-request-help {
+  display: block;
+
+  margin-top: 8px;
+
+  font-size: 10.5px;
+  line-height: 1.55;
+
+  color: #87938a;
+}
+
+
+/* =========================================================
+   MESSAGES
+========================================================= */
+
+.writer-request-message {
+  display: flex;
+  align-items: flex-start;
+
+  width: 100%;
+  box-sizing: border-box;
+
+  margin-bottom: 18px;
+  padding: 11px 13px;
+
+  border-radius: 8px;
+
+  font-size: 11.5px;
+  line-height: 1.55;
+}
+
+.writer-request-message.error {
+  border: 1px solid #fecaca;
+  background: #fff8f8;
+  color: #b91c1c;
+}
+
+.writer-request-message.success {
+  border: 1px solid #bbf7d0;
+  background: #f5fff7;
+  color: #15803d;
+}
+
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.writer-request-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  width: 100%;
+
+  padding-top: 5px;
+}
+
+.writer-request-cancel-btn,
+.writer-request-submit-btn {
+  width: 100%;
+  height: 42px;
+
+  padding: 0 17px;
+
+  border-radius: 8px;
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 750;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.15s ease,
+    opacity 0.2s ease;
+}
+
+
+/* =========================================================
+   CANCEL
+========================================================= */
+
+.writer-request-cancel-btn {
+  border: 1px solid #d5ddd6;
+
+  background: #ffffff;
+  color: #46564b;
+}
+
+.writer-request-cancel-btn:hover {
+  border-color: #b9c6bb;
+  background: #f8faf8;
+  color: #26372b;
+}
+
+
+/* =========================================================
+   SUBMIT
+========================================================= */
+
+.writer-request-submit-btn {
+  border: 1px solid #214d35;
+
+  background: #214d35;
+  color: #ffffff;
+
+  box-shadow: 0 2px 5px rgba(33, 77, 53, 0.15);
+}
+
+.writer-request-submit-btn:hover {
+  border-color: #183d2a;
+  background: #183d2a;
+  box-shadow: 0 4px 10px rgba(33, 77, 53, 0.18);
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   DISABLED
+========================================================= */
+
+.writer-request-cancel-btn:disabled,
+.writer-request-submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.writer-request-loading {
+  min-height: 420px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  color: #6b7280;
+  font-size: 12px;
+  text-align: center;
+}
+
+.writer-request-loading p {
+  margin: 12px 0 0;
+}
+
+.writer-request-spinner {
+  width: 22px;
+  height: 22px;
+
+  border: 2px solid #e1e8e2;
+  border-top-color: #4d8964;
+
+  border-radius: 50%;
+
+  animation: writerRequestSpin 0.75s linear infinite;
+}
+
+@keyframes writerRequestSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 760px) {
+
+  .writer-request-page {
+    max-width: 680px;
+    padding: 30px 22px 55px;
+  }
+
+  .writer-request-header {
+    margin-bottom: 23px;
+  }
+
+  .writer-request-header h2 {
+    font-size: 27px;
+  }
+
+  .writer-request-card-header {
+    padding: 24px 24px 22px;
+  }
+
+  .writer-request-type {
+    padding: 22px 24px 0;
+  }
+
+  .writer-request-form {
+    padding: 22px 24px 26px;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 560px) {
+
+  .writer-request-page {
+    max-width: 500px;
+    padding: 24px 15px 45px;
+
+    /* Center the entire page content */
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+
+  /* -------------------------------------------------------
+     Header
+  ------------------------------------------------------- */
+
+  .writer-request-header {
+    align-items: center;
+    text-align: center;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+
+  .writer-request-header > div {
+    width: 100%;
+  }
+
+  .writer-request-kicker {
+    margin-bottom: 8px;
+  }
+
+  .writer-request-header h2 {
+    font-size: 25px;
+    letter-spacing: -0.4px;
+  }
+
+  .writer-request-header p {
+    max-width: 430px;
+    margin-left: auto;
+    margin-right: auto;
+
+    font-size: 12.5px;
+    line-height: 1.65;
+  }
+
+  .writer-request-back-btn {
+    width: 100%;
+    max-width: 300px;
+  }
+
+
+  /* -------------------------------------------------------
+     Main card
+  ------------------------------------------------------- */
+
+  .writer-request-card {
+    width: 100%;
+    border-radius: 12px;
+  }
+
+
+  /* -------------------------------------------------------
+     Card header
+  ------------------------------------------------------- */
+
+  .writer-request-card-header {
+    padding: 21px 19px;
+
+    text-align: center;
+  }
+
+  .writer-request-card-header h3 {
+    font-size: 16px;
+    line-height: 1.45;
+  }
+
+  .writer-request-card-header p {
+    font-size: 12px;
+    line-height: 1.6;
+  }
+
+
+  /* -------------------------------------------------------
+     Request options
+  ------------------------------------------------------- */
+
+  .writer-request-type {
+    align-items: center;
+
+    padding: 18px 19px 0;
+    gap: 10px;
+  }
+
+  .writer-request-type button {
+    width: 100%;
+    max-width: 430px;
+
+    min-height: 82px;
+
+    padding: 15px 16px;
+
+    text-align: center;
+    align-items: center;
+  }
+
+  .writer-request-type button.active::before {
+    top: 0;
+    bottom: auto;
+    left: 0;
+    right: 0;
+
+    width: 100%;
+    height: 3px;
+
+    border-radius: 10px 10px 0 0;
+  }
+
+  .writer-request-option-title {
+    font-size: 12.5px;
+  }
+
+  .writer-request-option-text {
+    font-size: 11px;
+  }
+
+
+  /* -------------------------------------------------------
+     Form
+  ------------------------------------------------------- */
+
+  .writer-request-form {
+    align-items: center;
+
+    padding: 21px 19px 22px;
+  }
+
+  .writer-request-field {
+    width: 100%;
+    max-width: 430px;
+
+    text-align: center;
+  }
+
+  .writer-request-field label {
+    font-size: 11.5px;
+  }
+
+  .writer-request-field select,
+  .writer-request-field input {
+    height: 44px;
+    text-align: left;
+  }
+
+  .writer-request-help {
+    text-align: center;
+  }
+
+
+  /* -------------------------------------------------------
+     Messages
+  ------------------------------------------------------- */
+
+  .writer-request-message {
+    width: 100%;
+    max-width: 430px;
+
+    justify-content: center;
+
+    text-align: center;
+  }
+
+
+  /* -------------------------------------------------------
+     Actions
+  ------------------------------------------------------- */
+
+  .writer-request-actions {
+    width: 100%;
+    max-width: 430px;
+
+    align-items: center;
+  }
+
+  .writer-request-cancel-btn,
+  .writer-request-submit-btn {
+    width: 100%;
+    height: 42px;
+  }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 380px) {
+
+  .writer-request-page {
+    padding-left: 11px;
+    padding-right: 11px;
+  }
+
+  .writer-request-card-header {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .writer-request-type {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .writer-request-form {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .writer-request-header h2 {
+    font-size: 23px;
+  }
+
+  .writer-request-header p {
+    font-size: 12px;
+  }
+
+  .writer-request-card-header h3 {
+    font-size: 15px;
+  }
+}

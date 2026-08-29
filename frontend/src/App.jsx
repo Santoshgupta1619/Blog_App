@@ -25,11 +25,18 @@ import ResetPassword from "./pages/ResetPassword";
 import VerifyEmail from "./pages/VerifyEmail";
 import About from "./pages/About";
 import ScrollToTop from "./components/ScrollToTop";
+import WriterArticles from "./dashboard/WriterArticles";
+import WriterProfile from "./dashboard/WriterProfile";
+import WriterWrite from "./dashboard/WriterWrite";
+import WriterEditArticle from "./dashboard/WriterEditArticle";
+import BecomeWriter from "./dashboard/BecomeWriter/BecomeWriter";
+import WriterRequests from "./admin/pages/WriterRequests";
+import WriterRequest from "./dashboard/WriterRequest";
 
 function App() {
   return (
     <BrowserRouter>
-    <ScrollToTop />
+      <ScrollToTop />
       <Navbar />
 
       <Routes>
@@ -56,6 +63,17 @@ function App() {
           <Route path="profile" element={<Profile />} />
           <Route path="bookmarks" element={<Bookmark />} />
           <Route path="activity" element={<Activity />} />
+          <Route path="writer/articles" element={<WriterArticles />} />
+
+          <Route path="writer/write" element={<WriterWrite />} />
+
+          <Route path="writer/profile" element={<WriterProfile />} />
+
+          <Route path="writer/request" element={<WriterRequest />} />
+
+          <Route path="writer/edit/:id" element={<WriterEditArticle />} />
+
+          <Route path="become-writer" element={<BecomeWriter />} />
         </Route>
 
         {/* Admin Dashboard */}
@@ -71,6 +89,8 @@ function App() {
           <Route path="scheduled" element={<Scheduled />} />
           <Route path="categories" element={<Categories />} />
           <Route path="articles" element={<Article />} />
+          <Route path="writer-requests" element={<WriterRequests />} />
+
           <Route path="adminbookmark" element={<AdminBookmark />} />
           <Route path="articles/edit/:id" element={<EditArticle />} />
         </Route>

@@ -1457,3 +1457,137 @@
     font-size: 0.9rem;
   }
 }
+
+/* =========================================================
+   VIEW ALL ARTICLES BUTTON
+========================================================= */
+
+.latest-view-all {
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+}
+
+.latest-view-all button {
+  padding: 12px 24px;
+
+  border: 1px solid #214d35;
+  background: transparent;
+
+  color: #214d35;
+
+  cursor: pointer;
+
+  font: 700 0.72rem/1.4 var(--sans);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.latest-view-all button:hover {
+  background: #214d35;
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+/* =========================================================
+   ALL ARTICLES PAGE
+========================================================= */
+
+.all-articles-section {
+  margin-bottom: 45px;
+}
+
+.all-articles-header {
+  position: relative;
+}
+
+.all-articles-header .section-heading {
+  margin-bottom: 12px;
+}
+
+.back-to-home {
+  margin-bottom: 25px;
+
+  padding: 0;
+
+  border: 0;
+  background: transparent;
+
+  color: #214d35;
+
+  cursor: pointer;
+
+  font: 700 0.72rem/1.4 var(--sans);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.back-to-home:hover {
+  color: #397052;
+  transform: translateX(-3px);
+}
+
+/* =========================================================
+   ALL ARTICLES GRID
+========================================================= */
+
+.all-articles-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 25px;
+}
+
+/* =========================================================
+   ALL ARTICLES PAGINATION
+========================================================= */
+
+.all-articles-section + .pagination {
+  margin-top: 0;
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 950px) {
+  .all-articles-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+  .latest-view-all {
+    margin-top: 27px;
+  }
+
+  .latest-view-all button {
+    width: 100%;
+    padding: 12px 18px;
+  }
+
+  .all-articles-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .back-to-home {
+    margin-bottom: 20px;
+  }
+}
+
+#upload-btn{
+  background: #222;
+}
